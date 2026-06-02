@@ -1,0 +1,5 @@
+.build/
+*.app
+*.ttf
+.DS_Store
+
