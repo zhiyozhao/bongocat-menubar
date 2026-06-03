@@ -45,7 +45,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if AXIsProcessTrusted() {
             keyboardMonitor.start()
         } else {
-            _ = AXIsProcessTrustedWithOptions([kAXTrustedCheckOptionPrompt.takeRetainedValue(): true] as NSDictionary)
+            showPermissionGuide()
         }
     }
 
@@ -55,10 +55,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             self.refreshPermissionUI()
             if !self.keyboardMonitor.isRunning && AXIsProcessTrusted() {
                 self.keyboardMonitor.start()
-            } else if self.keyboardMonitor.isRunning && !AXIsProcessTrusted() {
-                // Permission revoked → prompt again
-                _ = AXIsProcessTrustedWithOptions([kAXTrustedCheckOptionPrompt.takeRetainedValue(): true] as NSDictionary)
             }
+        }
+    }
+
+    private func showPermissionGuide() {
+        let alert = NSAlert()
+        alert.messageText = "Accessibility Permission Required"
+        alert.informativeText = "MenuMew needs to monitor keyboard input so the cat can type along with you.\n\nClick \"Open Settings\" to grant access."
+        alert.alertStyle = .informational
+        alert.addButton(withTitle: "Open Settings")
+        alert.addButton(withTitle: "Later")
+
+        NSApp.activate(ignoringOtherApps: true)
+        let response = alert.runModal()
+        if response == .alertFirstButtonReturn {
+            _ = AXIsProcessTrustedWithOptions([kAXTrustedCheckOptionPrompt.takeRetainedValue(): true] as NSDictionary)
         }
     }
 
