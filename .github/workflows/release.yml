@@ -22,6 +22,7 @@ jobs:
           cp BongoCat-Menubar/Info.plist "BongoCat-Menubar/.build/BongoCat Menubar.app/Contents/Info.plist"
           cp BongoCat-Menubar/Resources/Icons/*.svg "BongoCat-Menubar/.build/BongoCat Menubar.app/Contents/Resources/" 2>/dev/null || true
           cp BongoCat-Menubar/Resources/Icons/*.png "BongoCat-Menubar/.build/BongoCat Menubar.app/Contents/Resources/" 2>/dev/null || true
+          for lproj in BongoCat-Menubar/Resources/*.lproj; do [ -d "$lproj" ] && cp -R "$lproj" "BongoCat-Menubar/.build/BongoCat Menubar.app/Contents/Resources/"; done
 
           SOURCES=$(find BongoCat-Menubar/Sources -name "*.swift" | sort)
           swiftc \

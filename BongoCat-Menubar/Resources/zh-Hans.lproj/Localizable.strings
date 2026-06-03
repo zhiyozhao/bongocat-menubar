@@ -1,0 +1,11 @@
+/* Accessibility permission alert */
+"permission.alert.title" = "需要辅助功能权限";
+"permission.alert.message" = "BongoCat Menubar 需要监听键盘输入，让小猫和你一起打字。\n\n点击「打开设置」授予权限。";
+"permission.alert.open_settings" = "打开设置";
+"permission.alert.later" = "稍后";
+
+/* Menu items */
+"menu.accessibility" = "辅助功能";
+"menu.normal_mode" = "普通模式";
+"menu.follow_mode" = "跟随模式";
+"menu.quit" = "退出";

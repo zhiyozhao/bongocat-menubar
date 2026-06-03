@@ -1,0 +1,11 @@
+/* Accessibility permission alert */
+"permission.alert.title" = "Accessibility Permission Required";
+"permission.alert.message" = "BongoCat Menubar needs to monitor keyboard input so the cat can type along with you.\n\nClick \"Open Settings\" to grant access.";
+"permission.alert.open_settings" = "Open Settings";
+"permission.alert.later" = "Later";
+
+/* Menu items */
+"menu.accessibility" = "Accessibility";
+"menu.normal_mode" = "Normal Mode";
+"menu.follow_mode" = "Follow Mode";
+"menu.quit" = "Quit";

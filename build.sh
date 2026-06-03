@@ -23,6 +23,14 @@ if [ -d "$PROJECT_DIR/Resources/Icons" ]; then
     echo "  Icons copied to bundle"
 fi
 
+# Copy localization files
+for lproj in "$PROJECT_DIR/Resources/"*.lproj; do
+    if [ -d "$lproj" ]; then
+        cp -R "$lproj" "$APP_BUNDLE/Contents/Resources/"
+    fi
+done
+echo "  Localizations copied to bundle"
+
 echo "Compiling Swift sources..."
 SOURCES=$(find "$PROJECT_DIR/Sources" -name "*.swift" | sort)
 
@@ -36,5 +44,11 @@ swiftc \
 
 echo ""
 echo "=== Build complete: $APP_BUNDLE ==="
+
+codesign --force --deep --sign - "$APP_BUNDLE"
+
+# Reset Accessibility permission so the new binary can re-request it
+tccutil reset Accessibility com.zhiyozhao.bongocat-menubar 2>/dev/null || true
+
 echo ""
 echo "To run: open \"$APP_BUNDLE\""

@@ -61,11 +61,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func showPermissionGuide() {
         let alert = NSAlert()
-        alert.messageText = "Accessibility Permission Required"
-        alert.informativeText = "BongoCat Menubar needs to monitor keyboard input so the cat can type along with you.\n\nClick \"Open Settings\" to grant access."
+        alert.messageText = NSLocalizedString("permission.alert.title", comment: "")
+        alert.informativeText = NSLocalizedString("permission.alert.message", comment: "")
         alert.alertStyle = .informational
-        alert.addButton(withTitle: "Open Settings")
-        alert.addButton(withTitle: "Later")
+        alert.addButton(withTitle: NSLocalizedString("permission.alert.open_settings", comment: ""))
+        alert.addButton(withTitle: NSLocalizedString("permission.alert.later", comment: ""))
 
         NSApp.activate(ignoringOtherApps: true)
         let response = alert.runModal()
@@ -78,7 +78,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let granted = AXIsProcessTrusted()
         permissionItem.isHidden = granted
         if !granted {
-            permissionItem.title = "Accessibility"
+            permissionItem.title = NSLocalizedString("menu.accessibility", comment: "")
             permissionItem.action = #selector(requestPermission)
             permissionItem.image = NSImage(systemSymbolName: "exclamationmark.triangle.fill", accessibilityDescription: nil)?
                 .withSymbolConfiguration(NSImage.SymbolConfiguration(pointSize: NSFont.menuFont(ofSize: 0).pointSize, weight: .regular))
@@ -104,24 +104,24 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func setupMenu() {
         let menu = NSMenu()
 
-        permissionItem = NSMenuItem(title: "Accessibility", action: #selector(requestPermission), keyEquivalent: "")
+        permissionItem = NSMenuItem(title: NSLocalizedString("menu.accessibility", comment: ""), action: #selector(requestPermission), keyEquivalent: "")
         permissionItem.image = NSImage(systemSymbolName: "exclamationmark.triangle.fill", accessibilityDescription: nil)?
             .withSymbolConfiguration(NSImage.SymbolConfiguration(pointSize: NSFont.menuFont(ofSize: 0).pointSize, weight: .regular))
         menu.addItem(permissionItem)
 
         menu.addItem(NSMenuItem.separator())
 
-        normalModeItem = NSMenuItem(title: "Normal Mode", action: #selector(selectNormalMode), keyEquivalent: "")
+        normalModeItem = NSMenuItem(title: NSLocalizedString("menu.normal_mode", comment: ""), action: #selector(selectNormalMode), keyEquivalent: "")
         normalModeItem.state = .on
         menu.addItem(normalModeItem)
 
-        followHandsItem = NSMenuItem(title: "Follow Mode", action: #selector(selectFollowHands), keyEquivalent: "")
+        followHandsItem = NSMenuItem(title: NSLocalizedString("menu.follow_mode", comment: ""), action: #selector(selectFollowHands), keyEquivalent: "")
         followHandsItem.state = .off
         menu.addItem(followHandsItem)
 
         menu.addItem(NSMenuItem.separator())
 
-        menu.addItem(NSMenuItem(title: "Quit", action: #selector(quitApp), keyEquivalent: "q"))
+        menu.addItem(NSMenuItem(title: NSLocalizedString("menu.quit", comment: ""), action: #selector(quitApp), keyEquivalent: "q"))
 
         statusItem.menu = menu
     }
