@@ -42,7 +42,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func startMonitoringIfPermitted() {
-        if AXIsProcessTrusted() { keyboardMonitor.start() }
+        if AXIsProcessTrusted() {
+            keyboardMonitor.start()
+        } else {
+            _ = AXIsProcessTrustedWithOptions([kAXTrustedCheckOptionPrompt.takeRetainedValue(): true] as NSDictionary)
+        }
     }
 
     private func startPermissionPolling() {
@@ -51,6 +55,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             self.refreshPermissionUI()
             if !self.keyboardMonitor.isRunning && AXIsProcessTrusted() {
                 self.keyboardMonitor.start()
+            } else if self.keyboardMonitor.isRunning && !AXIsProcessTrusted() {
+                // Permission revoked → prompt again
+                _ = AXIsProcessTrustedWithOptions([kAXTrustedCheckOptionPrompt.takeRetainedValue(): true] as NSDictionary)
             }
         }
     }
@@ -68,11 +75,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc private func requestPermission() {
         _ = AXIsProcessTrustedWithOptions([kAXTrustedCheckOptionPrompt.takeRetainedValue(): true] as NSDictionary)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-            guard let self = self else { return }
-            self.refreshPermissionUI()
-            if AXIsProcessTrusted() { self.keyboardMonitor.start() }
-        }
     }
 
     @objc private func selectNormalMode() {
