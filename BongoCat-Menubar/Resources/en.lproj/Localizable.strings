@@ -8,4 +8,5 @@
 "menu.accessibility" = "Accessibility";
 "menu.normal_mode" = "Normal Mode";
 "menu.follow_mode" = "Follow Mode";
+"menu.launch_at_login" = "Launch at Login";
 "menu.quit" = "Quit";

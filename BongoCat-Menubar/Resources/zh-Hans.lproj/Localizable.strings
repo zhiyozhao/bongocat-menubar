@@ -8,4 +8,5 @@
 "menu.accessibility" = "辅助功能";
 "menu.normal_mode" = "普通模式";
 "menu.follow_mode" = "跟随模式";
+"menu.launch_at_login" = "开机启动";
 "menu.quit" = "退出";

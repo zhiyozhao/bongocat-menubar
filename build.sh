@@ -40,6 +40,7 @@ swiftc \
     -framework AppKit \
     -framework ApplicationServices \
     -framework CoreGraphics \
+    -framework ServiceManagement \
     $SOURCES
 
 echo ""

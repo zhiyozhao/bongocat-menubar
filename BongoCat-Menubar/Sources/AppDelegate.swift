@@ -1,5 +1,6 @@
 import AppKit
 import ApplicationServices
+import ServiceManagement
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     private var statusItem: NSStatusItem!
@@ -9,11 +10,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private var permissionItem: NSMenuItem!
     private var normalModeItem: NSMenuItem!
     private var followHandsItem: NSMenuItem!
+    private var launchAtLoginItem: NSMenuItem!
     private var permissionTimer: Timer?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         iconManager = IconManager()
         animator = KeystrokeAnimator()
+
+        let savedFollowHands = UserDefaults.standard.bool(forKey: "followHands")
+        animator.followHands = savedFollowHands
 
         animator.onFrameChange = { [weak self] frame in
             self?.statusItem.button?.image = self?.iconManager.icon(for: frame)
@@ -91,14 +96,25 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc private func selectNormalMode() {
         animator.followHands = false
+        UserDefaults.standard.set(false, forKey: "followHands")
         normalModeItem.state = .on
         followHandsItem.state = .off
     }
 
     @objc private func selectFollowHands() {
         animator.followHands = true
+        UserDefaults.standard.set(true, forKey: "followHands")
         normalModeItem.state = .off
         followHandsItem.state = .on
+    }
+
+    @objc private func toggleLaunchAtLogin() {
+        if SMAppService.mainApp.status == .enabled {
+            try? SMAppService.mainApp.unregister()
+        } else {
+            try? SMAppService.mainApp.register()
+        }
+        launchAtLoginItem.state = SMAppService.mainApp.status == .enabled ? .on : .off
     }
 
     private func setupMenu() {
@@ -112,12 +128,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         menu.addItem(NSMenuItem.separator())
 
         normalModeItem = NSMenuItem(title: NSLocalizedString("menu.normal_mode", comment: ""), action: #selector(selectNormalMode), keyEquivalent: "")
-        normalModeItem.state = .on
+        normalModeItem.state = animator.followHands ? .off : .on
         menu.addItem(normalModeItem)
 
         followHandsItem = NSMenuItem(title: NSLocalizedString("menu.follow_mode", comment: ""), action: #selector(selectFollowHands), keyEquivalent: "")
-        followHandsItem.state = .off
+        followHandsItem.state = animator.followHands ? .on : .off
         menu.addItem(followHandsItem)
+
+        menu.addItem(NSMenuItem.separator())
+
+        launchAtLoginItem = NSMenuItem(title: NSLocalizedString("menu.launch_at_login", comment: ""), action: #selector(toggleLaunchAtLogin), keyEquivalent: "")
+        launchAtLoginItem.state = SMAppService.mainApp.status == .enabled ? .on : .off
+        menu.addItem(launchAtLoginItem)
 
         menu.addItem(NSMenuItem.separator())
 

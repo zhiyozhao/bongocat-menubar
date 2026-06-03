@@ -31,6 +31,7 @@ jobs:
             -framework AppKit \
             -framework ApplicationServices \
             -framework CoreGraphics \
+            -framework ServiceManagement \
             $SOURCES
 
       - name: Ad-hoc sign
