@@ -3,3 +3,4 @@
 *.ttf
 .DS_Store
 
+.playwright-cli/

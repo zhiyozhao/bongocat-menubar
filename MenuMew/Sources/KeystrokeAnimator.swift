@@ -12,7 +12,7 @@ class KeystrokeAnimator {
     private let minInterval: TimeInterval = 1.0 / 60.0
     private var idleTimer: Timer?
     private var toggleFlag = false
-    private var lastUpdate: Date = .distantPast
+    private var lastUpdate: CFAbsoluteTime = 0
     private var currentFrame: String = "idle"
 
     // Left-hand keycodes (QWERTY standard macOS)
@@ -104,8 +104,8 @@ class KeystrokeAnimator {
     // MARK: - Normal Mode (alternating toggle)
 
     private func handleNormalMode() {
-        let now = Date()
-        guard now.timeIntervalSince(lastUpdate) >= minInterval else {
+        let now = CFAbsoluteTimeGetCurrent()
+        guard now - lastUpdate >= minInterval else {
             resetIdleTimer()
             return
         }
@@ -119,12 +119,16 @@ class KeystrokeAnimator {
     }
 
     private func resetIdleTimer() {
-        idleTimer?.invalidate()
-        idleTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { [weak self] _ in
-            self?.currentFrame = "idle"
-            self?.onFrameChange?("idle")
-            self?.lastUpdate = .distantPast
-            self?.toggleFlag = false
+        if let timer = idleTimer {
+            timer.fireDate = Date(timeIntervalSinceNow: 0.5)
+        } else {
+            idleTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { [weak self] _ in
+                self?.currentFrame = "idle"
+                self?.onFrameChange?("idle")
+                self?.lastUpdate = 0
+                self?.toggleFlag = false
+                self?.idleTimer = nil
+            }
         }
     }
 }

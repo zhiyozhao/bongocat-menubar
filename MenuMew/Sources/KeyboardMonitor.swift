@@ -17,10 +17,19 @@ class KeyboardMonitor {
         eventTap = CGEvent.tapCreate(
             tap: .cgSessionEventTap,
             place: .headInsertEventTap,
-            options: .defaultTap,
+            options: .listenOnly,
             eventsOfInterest: CGEventMask(eventMask),
             callback: { (_, type, event, userInfo) -> Unmanaged<CGEvent>? in
                 let monitor = Unmanaged<KeyboardMonitor>.fromOpaque(userInfo!).takeUnretainedValue()
+
+                // System disabled our tap (permission revoked or timeout) → re-enable
+                if type == .tapDisabledByTimeout || type == .tapDisabledByUserInput {
+                    if let tap = monitor.eventTap {
+                        CGEvent.tapEnable(tap: tap, enable: true)
+                    }
+                    return Unmanaged.passUnretained(event)
+                }
+
                 let keycode = UInt16(event.getIntegerValueField(.keyboardEventKeycode))
                 DispatchQueue.main.async {
                     if type == .keyDown {

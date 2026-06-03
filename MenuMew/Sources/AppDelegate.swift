@@ -16,9 +16,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         animator = KeystrokeAnimator()
 
         animator.onFrameChange = { [weak self] frame in
-            DispatchQueue.main.async {
-                self?.statusItem.button?.image = self?.iconManager.icon(for: frame)
-            }
+            self?.statusItem.button?.image = self?.iconManager.icon(for: frame)
         }
 
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
