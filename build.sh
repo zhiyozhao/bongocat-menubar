@@ -2,9 +2,9 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_DIR="$SCRIPT_DIR/MenuMew"
+PROJECT_DIR="$SCRIPT_DIR/BongoCat-Menubar"
 BUILD_DIR="$PROJECT_DIR/.build"
-APP_NAME="MenuMew"
+APP_NAME="BongoCat Menubar"
 APP_BUNDLE="$BUILD_DIR/$APP_NAME.app"
 BINARY_PATH="$APP_BUNDLE/Contents/MacOS/$APP_NAME"
 
@@ -38,8 +38,3 @@ echo ""
 echo "=== Build complete: $APP_BUNDLE ==="
 echo ""
 echo "To run: open \"$APP_BUNDLE\""
-echo ""
-echo "If Accessibility permission was previously granted but isn't working:"
-echo "  Open System Settings > Privacy & Security > Accessibility"
-echo "  Toggle MenuMew OFF and ON again"
-echo "  Then reopen the app"

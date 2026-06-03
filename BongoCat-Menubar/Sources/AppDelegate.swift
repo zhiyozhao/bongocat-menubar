@@ -62,7 +62,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func showPermissionGuide() {
         let alert = NSAlert()
         alert.messageText = "Accessibility Permission Required"
-        alert.informativeText = "MenuMew needs to monitor keyboard input so the cat can type along with you.\n\nClick \"Open Settings\" to grant access."
+        alert.informativeText = "BongoCat Menubar needs to monitor keyboard input so the cat can type along with you.\n\nClick \"Open Settings\" to grant access."
         alert.alertStyle = .informational
         alert.addButton(withTitle: "Open Settings")
         alert.addButton(withTitle: "Later")
@@ -121,7 +121,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         menu.addItem(NSMenuItem.separator())
 
-        menu.addItem(NSMenuItem(title: "Quit MenuMew", action: #selector(quitApp), keyEquivalent: "q"))
+        menu.addItem(NSMenuItem(title: "Quit BongoCat Menubar", action: #selector(quitApp), keyEquivalent: "q"))
 
         statusItem.menu = menu
     }

@@ -5,13 +5,13 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
-	<string>MenuMew</string>
+	<string>BongoCat Menubar</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.menumew.app</string>
+	<string>com.zhiyozhao.bongocat-menubar</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>MenuMew</string>
+	<string>BongoCat Menubar</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -27,6 +27,6 @@
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2025. All rights reserved.</string>
 	<key>NSAppleEventsUsageDescription</key>
-	<string>MenuMew needs accessibility access to detect keyboard typing speed and change the menu bar icon accordingly.</string>
+	<string>BongoCat Menubar needs accessibility access to detect your keystrokes so the cat can type along with you.</string>
 </dict>
 </plist>
