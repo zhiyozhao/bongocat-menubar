@@ -12,7 +12,7 @@ class KeyboardMonitor {
     func start() {
         guard eventTap == nil else { return }
 
-        let eventMask = (1 << CGEventType.keyDown.rawValue) | (1 << CGEventType.keyUp.rawValue)
+        let eventMask = (1 << CGEventType.keyDown.rawValue) | (1 << CGEventType.keyUp.rawValue) | (1 << CGEventType.flagsChanged.rawValue)
 
         eventTap = CGEvent.tapCreate(
             tap: .cgSessionEventTap,
@@ -36,6 +36,13 @@ class KeyboardMonitor {
                         monitor.onKeyDown?(keycode)
                     } else if type == .keyUp {
                         monitor.onKeyUp?(keycode)
+                    } else if type == .flagsChanged {
+                        let isDown = modifierKeyIsDown(keycode: keycode, flags: event.flags)
+                        if isDown {
+                            monitor.onKeyDown?(keycode)
+                        } else {
+                            monitor.onKeyUp?(keycode)
+                        }
                     }
                 }
                 return Unmanaged.passUnretained(event)
@@ -64,4 +71,16 @@ class KeyboardMonitor {
     }
 
     deinit { stop() }
+}
+
+private func modifierKeyIsDown(keycode: UInt16, flags: CGEventFlags) -> Bool {
+    let mask: CGEventFlags
+    switch keycode {
+    case 59, 62: mask = .maskControl     // LCtrl, RCtrl
+    case 58, 61: mask = .maskAlternate   // LOpt, ROpt
+    case 55, 54: mask = .maskCommand     // LCmd, RCmd
+    case 56, 60: mask = .maskShift       // LShift, RShift
+    default:      return false
+    }
+    return flags.contains(mask)
 }
