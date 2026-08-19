@@ -1,5 +1,9 @@
 name: Release
 
+# Tag push (v*) -> universal DMG -> published GitHub release.
+# The homebrew-tap repo polls releases on a schedule and bumps its casks
+# itself, so this workflow intentionally stops at publishing the release.
+
 on:
   push:
     tags:
@@ -9,64 +13,42 @@ permissions:
   contents: write
 
 jobs:
-  build:
+  release:
     runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # needed for version stamping from git tags
 
-      - name: Build
+      # Optional: sign release builds with the stable self-signed identity
+      # (same cert as local builds, so users' Accessibility permission
+      # survives upgrades). Falls back to ad-hoc when the secret is absent.
+      - name: Import signing identity
+        env:
+          SIGNING_CERT_P12: ${{ secrets.SIGNING_CERT_P12 }}
+          SIGNING_CERT_PASSWORD: ${{ secrets.SIGNING_CERT_PASSWORD }}
         run: |
-          mkdir -p BongoCat-Menubar/.build/BongoCat\ Menubar.app/Contents/MacOS
-          mkdir -p BongoCat-Menubar/.build/BongoCat\ Menubar.app/Contents/Resources
+          if [ -z "$SIGNING_CERT_P12" ]; then
+            echo "No SIGNING_CERT_P12 secret, falling back to ad-hoc signing"
+            exit 0
+          fi
+          KEYCHAIN=build.keychain
+          security create-keychain -p ci "$KEYCHAIN"
+          security set-keychain-settings -lut 3600 "$KEYCHAIN"
+          security default-keychain -s "$KEYCHAIN"
+          security unlock-keychain -p ci "$KEYCHAIN"
+          echo "$SIGNING_CERT_P12" | base64 -d > /tmp/cert.p12
+          security import /tmp/cert.p12 -k "$KEYCHAIN" \
+            -P "$SIGNING_CERT_PASSWORD" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple: -s -k ci "$KEYCHAIN"
+          rm /tmp/cert.p12
+          security find-certificate -c "BongoCat Menubar Development"
 
-          cp BongoCat-Menubar/Info.plist "BongoCat-Menubar/.build/BongoCat Menubar.app/Contents/Info.plist"
-          cp BongoCat-Menubar/Resources/Icons/*.svg "BongoCat-Menubar/.build/BongoCat Menubar.app/Contents/Resources/" 2>/dev/null || true
-          cp BongoCat-Menubar/Resources/Icons/*.png "BongoCat-Menubar/.build/BongoCat Menubar.app/Contents/Resources/" 2>/dev/null || true
-          for lproj in BongoCat-Menubar/Resources/*.lproj; do [ -d "$lproj" ] && cp -R "$lproj" "BongoCat-Menubar/.build/BongoCat Menubar.app/Contents/Resources/"; done
+      - name: Build release DMG (universal binary)
+        run: make dmg
 
-          SOURCES=$(find BongoCat-Menubar/Sources -name "*.swift" | sort)
-          swiftc \
-            -o "BongoCat-Menubar/.build/BongoCat Menubar.app/Contents/MacOS/BongoCat Menubar" \
-            -target arm64-apple-macosx13.0 \
-            -framework AppKit \
-            -framework ApplicationServices \
-            -framework CoreGraphics \
-            -framework ServiceManagement \
-            $SOURCES
-
-      - name: Ad-hoc sign
-        run: codesign --force --deep --sign - "BongoCat-Menubar/.build/BongoCat Menubar.app"
-
-      - name: Package DMG
-        run: |
-          brew install create-dmg
-          create-dmg \
-            --volname "BongoCat Menubar" \
-            --window-pos 200 120 \
-            --window-size 600 400 \
-            --icon-size 100 \
-            --icon "BongoCat Menubar.app" 150 185 \
-            --app-drop-link 450 185 \
-            "BongoCat-Menubar-${{ github.ref_name }}.dmg" \
-            "BongoCat-Menubar/.build/BongoCat Menubar.app"
-
-      - name: Create Release
+      - name: Publish GitHub release
         uses: softprops/action-gh-release@v2
         with:
-          files: BongoCat-Menubar-${{ github.ref_name }}.dmg
+          files: .build/release/BongoCat-Menubar-v*.dmg
           generate_release_notes: true
-          draft: true
-
-      - name: Update Homebrew Cask
-        env:
-          TAP_TOKEN: ${{ secrets.TAP_TOKEN }}
-        run: |
-          VERSION="${GITHUB_REF_NAME#v}"
-          SHA=$(shasum -a 256 BongoCat-Menubar-${GITHUB_REF_NAME}.dmg | awk '{print $1}')
-          git clone https://x-access-token:${TAP_TOKEN}@github.com/zhiyozhao/homebrew-tap.git /tmp/tap
-          cd /tmp/tap
-          sed -i '' "s/version \".*\"/version \"${VERSION}\"/" Casks/bongocat-menubar.rb
-          sed -i '' "s/sha256 .*/sha256 \"${SHA}\"/" Casks/bongocat-menubar.rb
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add -A && git commit -m "bongocat-menubar ${VERSION}" && git push

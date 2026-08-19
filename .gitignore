@@ -1,6 +1,5 @@
 .build/
-*.app
-*.ttf
+*.icns
 .DS_Store
 
 .playwright-cli/
