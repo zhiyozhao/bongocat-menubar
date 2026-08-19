@@ -17,7 +17,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         iconManager = IconManager()
         animator = KeystrokeAnimator()
 
-        let savedFollowHands = UserDefaults.standard.bool(forKey: "followHands")
+        let savedFollowHands = UserDefaults.standard.object(forKey: "followHands") as? Bool ?? true
         animator.followHands = savedFollowHands
 
         animator.onFrameChange = { [weak self] frame in
