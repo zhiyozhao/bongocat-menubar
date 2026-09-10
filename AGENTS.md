@@ -2,17 +2,14 @@
 
 ## What this is
 
-macOS menu bar app (no dock icon) that animates a cat typing along with your keystrokes. Pure Swift, no Xcode project, no package manager — compiled directly with `swiftc`, driven by a `Makefile`.
+macOS menu bar app (no dock icon) that animates a cat typing along with your keystrokes. Pure Swift, built with SwiftPM (`Package.swift`, executable target) and packaged by `Scripts/build-app.sh`.
 
 ## Build and run
 
 ```bash
-make build   # debug build -> .build/debug/BongoCat Menubar.app (ad-hoc signed)
-make run     # build and launch
-make icon    # regenerate Resources/AppIcon.icns from the cat SVG
-make dmg     # universal (arm64+x86_64) release build + DMG in .build/release/
-make clean   # remove .build/
-make help    # list all targets
+Scripts/build-app.sh   # universal (arm64+x86_64) release build -> .build/release/BongoCat Menubar.app (DEV X signed)
+swift build            # debug compile only
+swift Scripts/generate-icon.swift   # regenerate Resources/AppIcon.icns from the cat SVG
 ```
 
 - Requires macOS 13+ frameworks (AppKit, ApplicationServices, CoreGraphics, ServiceManagement).
@@ -28,7 +25,7 @@ Resources/
   *.lproj/                en + zh-Hans Localizable.strings
   AppIcon.icns            generated (gitignored, rebuilt by `make build` when missing)
 Info.plist                LSUIElement app, bundle id com.zhiyozhao.bongocat-menubar
-Makefile                  all build/package entry points
+Scripts/build-app.sh        build/package entry point
 Scripts/generate-icon.swift  renders AppIcon.icns (gradient squircle + cat, iconutil)
 .github/workflows/release.yml
 ```
@@ -58,7 +55,7 @@ Entry point flow: `main.swift` → `AppDelegate.applicationDidFinishLaunching` �
 
 ## Signing
 
-Two modes, auto-selected by the Makefile:
+Two modes, auto-selected by the build script:
 
 - **Unified self-signed cert `DEV X`** (preferred): one certificate shared by all projects, managed in `~/Codes/dev-x-signing` (p12 + password there). The designated requirement anchors on the certificate, so macOS TCC keeps the Accessibility grant across rebuilds and upgrades.
 - **Ad-hoc (`-`)**: fallback when the cert is absent. The code hash changes every build, so Accessibility permission is re-requested after each update.
@@ -75,7 +72,7 @@ The app needs **Accessibility** permission (System Settings → Privacy & Securi
 
 `.github/workflows/release.yml` triggers on `v*` tags (same template as the other repos):
 
-1. Import signing identity → `Scripts/build-app.sh` (wraps `make build CONFIG=release ARCHS="arm64 x86_64"`) → verify `Authority=DEV X` → smoke launch → UDZO DMG via `hdiutil` (with `/Applications` symlink)
+1. Import signing identity → `Scripts/build-app.sh` (`swift build -c release --arch arm64 --arch x86_64` + assemble .app) → verify `Authority=DEV X` → smoke launch → UDZO DMG via `hdiutil` (with `/Applications` symlink)
 2. Publish GitHub release with auto-generated notes (asset: `BongoCat-Menubar-v<version>.dmg`; the tap cask is bumped by homebrew-tap's scheduled `sync-casks`)
 
 To release: push a tag like `git tag v1.0.0 && git push --tags`.
@@ -85,7 +82,7 @@ Homebrew distribution is **pull-based** and lives entirely in the `zhiyozhao/hom
 ## Gotchas
 
 - The app bundle name has a **space**: `BongoCat Menubar.app`. Quoting matters in shell commands, and because GNU Make splits target names on whitespace, incremental builds are tracked via `.build/<config>/.build-stamp` instead of the binary path.
-- `swiftc` only honors a single `-target` flag — universal binaries are built by compiling per-arch and combining with `lipo` (the Makefile handles this; set `ARCHS="arm64 x86_64"`).
-- `make build` compiles all `Sources/*.swift` — adding a new file requires no manifest changes.
+- Universal binaries are built by `swift build --arch arm64 --arch x86_64` (SwiftPM lipo 自动合并；产物在 `.build/apple/Products/Release/`).
+- `swift build` compiles everything under `Sources/BongoCatMenubar/` — adding a new file requires no manifest changes.
 - CGEvent taps can be silently disabled by the system (timeout or permission revocation). `KeyboardMonitor` handles `.tapDisabledByTimeout` and `.tapDisabledByUserInput` by re-enabling.
 - macOS renders SVGs in `NSImage` natively (used both at runtime for menu icons and by the icon generator script).
