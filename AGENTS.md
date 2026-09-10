@@ -60,10 +60,10 @@ Entry point flow: `main.swift` → `AppDelegate.applicationDidFinishLaunching` �
 
 Two modes, auto-selected by the Makefile:
 
-- **Self-signed cert `BongoCat Menubar Development`** (preferred): created once per machine via `scripts/create-signing-identity.sh`. The designated requirement anchors on the certificate, so macOS TCC keeps the Accessibility grant across rebuilds and upgrades.
+- **Unified self-signed cert `DEV X`** (preferred): one certificate shared by all projects, managed in `~/Codes/dev-x-signing` (p12 + password there). The designated requirement anchors on the certificate, so macOS TCC keeps the Accessibility grant across rebuilds and upgrades.
 - **Ad-hoc (`-`)**: fallback when the cert is absent. The code hash changes every build, so Accessibility permission is re-requested after each update.
 
-In CI, the release workflow imports the cert from secrets `SIGNING_CERT_P12` / `SIGNING_CERT_PASSWORD` when present, so release builds share the same stable identity. To set up: export the identity from Keychain Access (or `security export -t identities -f pkcs12`) as a .p12, then `gh secret set SIGNING_CERT_P12 < <(base64 -i cert.p12)` and `gh secret set SIGNING_CERT_PASSWORD`.
+In CI, the release workflow imports the cert from secrets `SIGNING_P12_BASE64` / `SIGNING_P12_PASSWORD`, so release builds share the same stable identity. To set up: `gh secret set SIGNING_P12_BASE64 < <(base64 -i ~/Codes/dev-x-signing/dev-x.p12)` and `echo dev-x-p12 | gh secret set SIGNING_P12_PASSWORD`.
 
 This is NOT Developer ID signing: Gatekeeper still warns for direct DMG downloads (the Homebrew cask strips quarantine via `xattr -cr` in postflight). To remove the warning entirely, use a paid Developer ID certificate + notarization.
 
@@ -73,10 +73,10 @@ The app needs **Accessibility** permission (System Settings → Privacy & Securi
 
 ## CI / Release
 
-`.github/workflows/release.yml` triggers on `v*` tags:
+`.github/workflows/release.yml` triggers on `v*` tags (same template as the other repos):
 
-1. `make dmg` (universal binary, ad-hoc signed, UDZO DMG via `hdiutil`)
-2. Publish GitHub release with auto-generated notes (asset: `BongoCat-Menubar-v<version>.dmg`)
+1. Import signing identity → `Scripts/build-app.sh` (wraps `make build CONFIG=release ARCHS="arm64 x86_64"`) → verify `Authority=DEV X` → smoke launch → UDZO DMG via `hdiutil` (with `/Applications` symlink)
+2. Publish GitHub release with auto-generated notes (asset: `BongoCat-Menubar-v<version>.dmg`; the tap cask is bumped by homebrew-tap's scheduled `sync-casks`)
 
 To release: push a tag like `git tag v1.0.0 && git push --tags`.
 

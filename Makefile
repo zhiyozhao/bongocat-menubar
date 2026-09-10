@@ -7,9 +7,9 @@ CONFIG        ?= debug
 ARCHS         ?= $(shell uname -m)
 
 # Signing identity. "-" = ad-hoc (TCC/Accessibility permission is re-requested
-# after every update). If the "BongoCat Menubar Development" certificate exists
-# in the keychain (see （证书管理集中在 ~/Codes/dev-x-signing）) it is used
-# automatically, so Accessibility permission survives upgrades.
+# after every update). The unified self-signed "DEV X" certificate (managed in
+# ~/Codes/dev-x-signing, shared by all projects) is used automatically when
+# present in the keychain, so Accessibility permission survives upgrades.
 IDENTITY_NAME := DEV X
 SIGNING_IDENTITY ?= $(shell security find-certificate -c "$(IDENTITY_NAME)" >/dev/null 2>&1 && echo "$(IDENTITY_NAME)" || echo "-")
 
