@@ -42,7 +42,7 @@ jobs:
             -P "$SIGNING_CERT_PASSWORD" -T /usr/bin/codesign
           security set-key-partition-list -S apple-tool:,apple: -s -k ci "$KEYCHAIN"
           rm /tmp/cert.p12
-          security find-certificate -c "BongoCat Menubar Development"
+          security find-certificate -c "DEV X"
 
       - name: Build release DMG (universal binary)
         run: make dmg

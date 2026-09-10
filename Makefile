@@ -10,7 +10,7 @@ ARCHS         ?= $(shell uname -m)
 # after every update). If the "BongoCat Menubar Development" certificate exists
 # in the keychain (see scripts/create-signing-identity.sh) it is used
 # automatically, so Accessibility permission survives upgrades.
-IDENTITY_NAME := BongoCat Menubar Development
+IDENTITY_NAME := DEV X
 SIGNING_IDENTITY ?= $(shell security find-certificate -c "$(IDENTITY_NAME)" >/dev/null 2>&1 && echo "$(IDENTITY_NAME)" || echo "-")
 
 BUILD_DIR     := .build/$(CONFIG)
