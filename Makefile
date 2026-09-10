@@ -8,7 +8,7 @@ ARCHS         ?= $(shell uname -m)
 
 # Signing identity. "-" = ad-hoc (TCC/Accessibility permission is re-requested
 # after every update). If the "BongoCat Menubar Development" certificate exists
-# in the keychain (see scripts/create-signing-identity.sh) it is used
+# in the keychain (see （证书管理集中在 ~/Codes/dev-x-signing）) it is used
 # automatically, so Accessibility permission survives upgrades.
 IDENTITY_NAME := DEV X
 SIGNING_IDENTITY ?= $(shell security find-certificate -c "$(IDENTITY_NAME)" >/dev/null 2>&1 && echo "$(IDENTITY_NAME)" || echo "-")
@@ -82,7 +82,7 @@ run: build ## Build, then launch the app
 	@open "$(APP_BUNDLE)"
 
 icon: ## Generate Resources/AppIcon.icns from the cat artwork
-	@swift scripts/generate-icon.swift
+	@swift Scripts/generate-icon.swift
 
 $(APPICON):
 	@$(MAKE) --no-print-directory icon

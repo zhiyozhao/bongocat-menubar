@@ -1,54 +1,85 @@
-name: Release
-
-# Tag push (v*) -> universal DMG -> published GitHub release.
-# The homebrew-tap repo polls releases on a schedule and bumps its casks
-# itself, so this workflow intentionally stops at publishing the release.
+name: release
 
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
 permissions:
   contents: write
 
+env:
+  APP_BUNDLE: .build/release/BongoCat Menubar.app
+  DISPLAY_NAME: BongoCat Menubar
+  DMG_TEMPLATE: BongoCat-Menubar-vVERSION.dmg
+  INFO_PLIST: ""
+
 jobs:
   release:
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # needed for version stamping from git tags
 
-      # Optional: sign release builds with the stable self-signed identity
-      # (same cert as local builds, so users' Accessibility permission
-      # survives upgrades). Falls back to ad-hoc when the secret is absent.
       - name: Import signing identity
         env:
-          SIGNING_CERT_P12: ${{ secrets.SIGNING_CERT_P12 }}
-          SIGNING_CERT_PASSWORD: ${{ secrets.SIGNING_CERT_PASSWORD }}
+          P12_BASE64: ${{ secrets.SIGNING_P12_BASE64 }}
+          P12_PASSWORD: ${{ secrets.SIGNING_P12_PASSWORD }}
         run: |
-          if [ -z "$SIGNING_CERT_P12" ]; then
-            echo "No SIGNING_CERT_P12 secret, falling back to ad-hoc signing"
-            exit 0
-          fi
-          KEYCHAIN=build.keychain
-          security create-keychain -p ci "$KEYCHAIN"
-          security set-keychain-settings -lut 3600 "$KEYCHAIN"
-          security default-keychain -s "$KEYCHAIN"
-          security unlock-keychain -p ci "$KEYCHAIN"
-          echo "$SIGNING_CERT_P12" | base64 -d > /tmp/cert.p12
-          security import /tmp/cert.p12 -k "$KEYCHAIN" \
-            -P "$SIGNING_CERT_PASSWORD" -T /usr/bin/codesign
-          security set-key-partition-list -S apple-tool:,apple: -s -k ci "$KEYCHAIN"
-          rm /tmp/cert.p12
-          security find-certificate -c "DEV X"
+          set -euo pipefail
+          KEYCHAIN=signing.keychain-db
+          KEYCHAIN_PASSWORD="$(openssl rand -hex 16)"
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
+          echo "$P12_BASE64" | base64 --decode > /tmp/dev-x.p12
+          security import /tmp/dev-x.p12 -k "$KEYCHAIN" -P "$P12_PASSWORD" -T /usr/bin/codesign
+          rm /tmp/dev-x.p12
+          security set-key-partition-list -S apple-tool:,apple: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN" >/dev/null
+          security list-keychains -d user -s "$KEYCHAIN" $(security list-keychains -d user | tr -d '"')
 
-      - name: Build release DMG (universal binary)
-        run: make dmg
+      - name: Set version from tag
+        if: env.INFO_PLIST != ''
+        run: |
+          set -euo pipefail
+          VERSION="${GITHUB_REF_NAME#v}"
+          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" "$INFO_PLIST"
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $GITHUB_RUN_NUMBER" "$INFO_PLIST"
 
-      - name: Publish GitHub release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: .build/release/BongoCat-Menubar-v*.dmg
-          generate_release_notes: true
+      - name: Build
+        run: Scripts/build-app.sh
+
+      - name: Verify signature
+        run: |
+          set -euo pipefail
+          codesign --verify --deep --strict "$APP_BUNDLE"
+          codesign -dvv "$APP_BUNDLE" 2>&1 | grep "Authority=DEV X"
+
+      - name: Smoke test (launch)
+        run: |
+          set -euo pipefail
+          BINARY="$APP_BUNDLE/Contents/MacOS/$(basename "$APP_BUNDLE" .app)"
+          "$BINARY" &
+          PID=$!
+          sleep 5
+          kill -0 "$PID"
+          kill "$PID" || true
+
+      - name: Package DMG
+        run: |
+          set -euo pipefail
+          VERSION="${GITHUB_REF_NAME#v}"
+          DMG_NAME="${DMG_TEMPLATE/VERSION/$VERSION}"
+          mkdir dmg
+          cp -R "$APP_BUNDLE" dmg/
+          ln -s /Applications dmg/Applications
+          hdiutil create -volname "$DISPLAY_NAME" -srcfolder dmg -ov -format UDZO "$DMG_NAME"
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          VERSION="${GITHUB_REF_NAME#v}"
+          DMG_NAME="${DMG_TEMPLATE/VERSION/$VERSION}"
+          gh release create "$GITHUB_REF_NAME" "$DMG_NAME" \
+            --title "$DISPLAY_NAME $VERSION" --generate-notes

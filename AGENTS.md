@@ -29,7 +29,7 @@ Resources/
   AppIcon.icns            generated (gitignored, rebuilt by `make build` when missing)
 Info.plist                LSUIElement app, bundle id com.zhiyozhao.bongocat-menubar
 Makefile                  all build/package entry points
-scripts/generate-icon.swift  renders AppIcon.icns (gradient squircle + cat, iconutil)
+Scripts/generate-icon.swift  renders AppIcon.icns (gradient squircle + cat, iconutil)
 .github/workflows/release.yml
 ```
 
