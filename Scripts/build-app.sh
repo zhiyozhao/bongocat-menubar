@@ -20,6 +20,9 @@ VERSION="$(git describe --tags --abbrev=0 2>/dev/null | sed 's/^v//')"
 [ -n "$VERSION" ] || VERSION="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' Info.plist)"
 BUILD_NUMBER="$(git rev-list --count HEAD 2>/dev/null || echo 1)"
 
+# ---- 图标（gitignored，缺失时现场生成，与旧 Makefile 行为一致） ----
+[ -f Resources/AppIcon.icns ] || swift Scripts/generate-icon.swift
+
 # ---- 组装 .app ----
 rm -rf "$APP_BUNDLE"
 mkdir -p "$APP_BUNDLE/Contents/MacOS" "$APP_BUNDLE/Contents/Resources"
