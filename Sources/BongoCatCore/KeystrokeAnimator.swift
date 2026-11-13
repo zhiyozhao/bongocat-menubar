@@ -1,7 +1,11 @@
 import Foundation
 
 public class KeystrokeAnimator {
-    public var followHands = false
+    public var followHands = false {
+        didSet {
+            if followHands != oldValue { resetState() }
+        }
+    }
     public var onFrameChange: ((String) -> Void)?
 
     // Independent hand state (like BongoCat)
@@ -34,6 +38,21 @@ public class KeystrokeAnimator {
         guard let hand = KeyMap.hand(for: keycode) else { return }
         if followHands {
             handleFollowUp(hand)
+        }
+    }
+
+    /// Drop per-mode state when switching modes, so a key held (or an idle timer
+    /// pending) in one mode cannot leave a stale frame in the other.
+    private func resetState() {
+        leftDown = false
+        rightDown = false
+        idleTimer?.invalidate()
+        idleTimer = nil
+        toggleFlag = false
+        lastUpdate = 0
+        if currentFrame != "idle" {
+            currentFrame = "idle"
+            onFrameChange?("idle")
         }
     }
 

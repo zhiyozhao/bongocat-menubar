@@ -122,7 +122,7 @@ struct NormalModeTests {
     }
 
     @Test("idle timer actually fires after the idle delay")
-    func idleTimerFires() async throws {
+    func idleTimerFires() {
         let (animator, rec) = makeAnimator(followHands: false, clock: { 100 })
         animator.keyDown(keycode: keyA)
         // The timer is scheduled on the current run loop; spin it until it fires.
@@ -131,5 +131,37 @@ struct NormalModeTests {
             RunLoop.current.run(until: Date().addingTimeInterval(0.05))
         }
         #expect(rec.frames == ["typing_a", "idle"])
+    }
+}
+
+@Suite("Switching modes")
+struct ModeSwitchTests {
+    @Test("a key held through Follow → Normal → Follow does not stay 'down'")
+    func staleHandState() {
+        var t: CFAbsoluteTime = 100
+        let (animator, rec) = makeAnimator(followHands: true, clock: { t })
+        animator.keyDown(keycode: keyA)       // left down in Follow
+        animator.followHands = false
+        animator.keyUp(keycode: keyA)         // released while in Normal
+        animator.followHands = true
+        t += 1
+        animator.keyDown(keycode: keyJ)       // only right hand now
+        #expect(rec.frames.last == "typing_b")
+    }
+
+    @Test("switching modes returns the cat to idle")
+    func switchGoesIdle() {
+        let (animator, rec) = makeAnimator(followHands: true)
+        animator.keyDown(keycode: keyA)
+        animator.followHands = false
+        #expect(rec.frames == ["typing_a", "idle"])
+    }
+
+    @Test("setting the same mode again does nothing")
+    func sameModeNoop() {
+        let (animator, rec) = makeAnimator(followHands: true)
+        animator.keyDown(keycode: keyA)
+        animator.followHands = true
+        #expect(rec.frames == ["typing_a"])
     }
 }
