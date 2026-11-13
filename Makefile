@@ -1,7 +1,7 @@
 # 统一入口（见 AGENTS.md）。.app 名字带空格，所以这里只用伪目标，不用文件目标。
 APP := .build/release/BongoCat Menubar.app
 
-.PHONY: check build test lint run package icon clean
+.PHONY: check build test lint run package icon demo clean
 
 ## check: 静态检查 + 构建 + 单元测试（CI 跑的就是它）
 check: lint build test
@@ -30,6 +30,10 @@ package:
 ## icon: 重新生成 Resources/AppIcon.icns
 icon:
 	swift Scripts/generate-icon.swift
+
+## demo: 重新生成 README 演示图和 GIF（docs/assets/）
+demo:
+	swift Scripts/render-demo.swift
 
 clean:
 	swift package clean
