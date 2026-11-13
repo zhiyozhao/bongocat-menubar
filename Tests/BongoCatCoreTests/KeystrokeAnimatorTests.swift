@@ -58,6 +58,37 @@ struct FollowHandsTests {
         #expect(rec.frames == ["typing_a"])
     }
 
+    @Test("same hand, two keys: the paw stays down until both are released")
+    func sameHandTwoKeys() {
+        let (animator, rec) = makeAnimator(followHands: true)
+        animator.keyDown(keycode: keyA)
+        animator.keyDown(keycode: keyS)
+        animator.keyUp(keycode: keyA)
+        #expect(rec.frames == ["typing_a"])
+        animator.keyUp(keycode: keyS)
+        #expect(rec.frames == ["typing_a", "idle"])
+    }
+
+    @Test("both hands with several keys: releasing one key per side keeps both paws down")
+    func bothHandsSeveralKeys() {
+        let (animator, rec) = makeAnimator(followHands: true)
+        animator.keyDown(keycode: keyA)
+        animator.keyDown(keycode: keyS)
+        animator.keyDown(keycode: keyJ)
+        animator.keyUp(keycode: keyA)
+        #expect(rec.frames.last == "typing_both")
+        animator.keyUp(keycode: keyS)
+        #expect(rec.frames.last == "typing_b")
+    }
+
+    @Test("releasing a key that was never pressed does not lift a held paw")
+    func strayKeyUp() {
+        let (animator, rec) = makeAnimator(followHands: true)
+        animator.keyDown(keycode: keyA)
+        animator.keyUp(keycode: keyS)
+        #expect(rec.frames == ["typing_a"])
+    }
+
     @Test("unmapped keys are ignored")
     func unmappedIgnored() {
         let (animator, rec) = makeAnimator(followHands: true)

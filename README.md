@@ -11,7 +11,7 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/demo-dark.gif">
-  <img alt="菜单栏里的小猫随按键拍爪子：按 F 抬左爪，按 J 抬右爪，同时按下双爪齐拍" src="docs/assets/demo-light.gif" width="640">
+  <img alt="菜单栏里的小猫随按键拍爪子：按 F 拍左爪，按 J 拍右爪，同时按下双爪齐拍" src="docs/assets/demo-light.gif" width="640">
 </picture>
 
 （演示图由 `Resources/Icons/` 里的真实图标渲染，菜单栏放大了 2.5 倍。）
@@ -60,12 +60,12 @@ brew install --cask zhiyozhao/tap/bongocat-menubar
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/demo-dark.png">
-  <img alt="四帧图标：待机、按 F 抬左爪、按 J 抬右爪、F 和 J 同时按下双爪" src="docs/assets/demo-light.png" width="640">
+  <img alt="四帧图标：待机、按 F 拍左爪、按 J 拍右爪、F 和 J 同时按下双爪齐拍" src="docs/assets/demo-light.png" width="640">
 </picture>
 
 | 模式 | 规则 |
 |---|---|
-| 跟随模式（默认） | 按住左手区的键抬左爪，右手区抬右爪，两边都按着就双爪齐拍，全部松开回到待机。 |
+| 跟随模式（默认） | 按住左手区的键拍下左爪，右手区拍下右爪，两边都按着就双爪齐拍。一侧按住了几个键，要这几个键全部松开，这一侧的爪子才收回；全部松开回到待机。 |
 | 普通模式 | 每按一次键，左右爪交替一次；停止敲击 0.5 秒后回到待机。 |
 
 左右手按 QWERTY 键盘的物理位置划分：

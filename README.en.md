@@ -11,7 +11,7 @@ Bongo Cat for the macOS menu bar: it taps its paws while you type. No window, no
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/demo-dark.gif">
-  <img alt="The menu bar cat taps along with key presses: F raises the left paw, J the right, both together tap both paws" src="docs/assets/demo-light.gif" width="640">
+  <img alt="The menu bar cat taps along with key presses: F taps the left paw, J the right, both together tap both paws" src="docs/assets/demo-light.gif" width="640">
 </picture>
 
 (Rendered from the real icons in `Resources/Icons/`; the menu bar is magnified 2.5×.)
@@ -60,12 +60,12 @@ Upgrade with `brew upgrade --cask bongocat-menubar`. The cask removes the downlo
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/demo-dark.png">
-  <img alt="The four frames: idle, F raises the left paw, J the right paw, F and J together both paws" src="docs/assets/demo-light.png" width="640">
+  <img alt="The four frames: idle, F taps the left paw, J the right paw, F and J together tap both paws" src="docs/assets/demo-light.png" width="640">
 </picture>
 
 | Mode | Behavior |
 |---|---|
-| Follow Mode (default) | Holding a left-side key raises the left paw, a right-side key the right paw, both sides together tap both paws. Releasing everything returns to idle. |
+| Follow Mode (default) | Holding a left-side key keeps the left paw down, a right-side key the right paw, both sides together both paws. If several keys on one side are held, that paw lifts only after all of them are released. Releasing everything returns to idle. |
 | Normal Mode | Every key press alternates the paws. After 0.5 s without typing the cat returns to idle. |
 
 Hands are split by physical key position on a QWERTY keyboard:

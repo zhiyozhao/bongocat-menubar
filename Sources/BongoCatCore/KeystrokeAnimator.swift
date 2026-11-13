@@ -8,9 +8,9 @@ public class KeystrokeAnimator {
     }
     public var onFrameChange: ((String) -> Void)?
 
-    // Independent hand state (like BongoCat)
-    private var leftDown = false
-    private var rightDown = false
+    // Keys currently held per hand; a paw goes down only when its set is empty.
+    private var leftHeld: Set<UInt16> = []
+    private var rightHeld: Set<UInt16> = []
 
     // Normal mode state
     private let minInterval: TimeInterval = 1.0 / 60.0
@@ -28,7 +28,7 @@ public class KeystrokeAnimator {
     public func keyDown(keycode: UInt16) {
         guard let hand = KeyMap.hand(for: keycode) else { return }
         if followHands {
-            handleFollowDown(hand)
+            handleFollowDown(hand, keycode: keycode)
         } else {
             handleNormalMode()
         }
@@ -37,15 +37,15 @@ public class KeystrokeAnimator {
     public func keyUp(keycode: UInt16) {
         guard let hand = KeyMap.hand(for: keycode) else { return }
         if followHands {
-            handleFollowUp(hand)
+            handleFollowUp(hand, keycode: keycode)
         }
     }
 
     /// Drop per-mode state when switching modes, so a key held (or an idle timer
     /// pending) in one mode cannot leave a stale frame in the other.
     private func resetState() {
-        leftDown = false
-        rightDown = false
+        leftHeld.removeAll()
+        rightHeld.removeAll()
         idleTimer?.invalidate()
         idleTimer = nil
         toggleFlag = false
@@ -58,27 +58,27 @@ public class KeystrokeAnimator {
 
     // MARK: - Follow Hands Mode (BongoCat style)
 
-    private func handleFollowDown(_ hand: Hand) {
+    private func handleFollowDown(_ hand: Hand, keycode: UInt16) {
         if hand == .left {
-            leftDown = true
+            leftHeld.insert(keycode)
         } else {
-            rightDown = true
+            rightHeld.insert(keycode)
         }
         updateFollowFrame()
     }
 
-    private func handleFollowUp(_ hand: Hand) {
+    private func handleFollowUp(_ hand: Hand, keycode: UInt16) {
         if hand == .left {
-            leftDown = false
+            leftHeld.remove(keycode)
         } else {
-            rightDown = false
+            rightHeld.remove(keycode)
         }
         updateFollowFrame()
     }
 
     private func updateFollowFrame() {
         let frame: String
-        switch (leftDown, rightDown) {
+        switch (!leftHeld.isEmpty, !rightHeld.isEmpty) {
         case (true, true):   frame = "typing_both"
         case (true, false):  frame = "typing_a"
         case (false, true):  frame = "typing_b"
