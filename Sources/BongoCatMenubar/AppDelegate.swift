@@ -1,5 +1,6 @@
 import AppKit
 import ApplicationServices
+import BongoCatCore
 import ServiceManagement
 
 class AppDelegate: NSObject, NSApplicationDelegate {

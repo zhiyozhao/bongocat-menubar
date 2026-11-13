@@ -1,26 +1,34 @@
 import AppKit
 
-class IconManager {
-    static let iconHeight: CGFloat = 16.0
+public class IconManager {
+    public static let iconHeight: CGFloat = 16.0
 
+    private let bundle: Bundle
     private var cache: [String: NSImage] = [:]
 
-    func icon(for frame: String) -> NSImage {
+    public init(bundle: Bundle = .main) {
+        self.bundle = bundle
+    }
+
+    public func icon(for frame: String) -> NSImage {
         if let cached = cache[frame] { return cached }
         let image = loadIcon(named: frame) ?? builtinFallback(for: frame)
         cache[frame] = image
         return image
     }
 
-    private func loadIcon(named name: String) -> NSImage? {
-        let candidates = [
+    /// Resource lookup order for a frame: `<name>.svg` → `<name>_color.png` → `<name>.png`.
+    static func candidates(for name: String) -> [(resource: String, ext: String)] {
+        [
             (name, "svg"),
             ("\(name)_color", "png"),
             (name, "png"),
         ]
+    }
 
-        for (res, ext) in candidates {
-            if let path = Bundle.main.path(forResource: res, ofType: ext) {
+    private func loadIcon(named name: String) -> NSImage? {
+        for (res, ext) in Self.candidates(for: name) {
+            if let path = bundle.path(forResource: res, ofType: ext) {
                 if let image = NSImage(contentsOfFile: path) {
                     let aspectRatio = image.size.width / image.size.height
                     let w = Self.iconHeight * aspectRatio
