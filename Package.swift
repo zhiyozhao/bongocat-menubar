@@ -16,5 +16,10 @@ let package = Package(
             dependencies: ["BongoCatCore"],
             path: "Sources/BongoCatMenubar"
         ),
+        .testTarget(
+            name: "BongoCatCoreTests",
+            dependencies: ["BongoCatCore"],
+            path: "Tests/BongoCatCoreTests"
+        ),
     ]
 )
