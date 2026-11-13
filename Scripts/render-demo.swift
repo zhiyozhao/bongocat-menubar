@@ -185,7 +185,7 @@ func drawKeys(centerX: CGFloat, centerY: CGFloat, pressed: Set<String>, theme: T
 // MARK: - Static image: four frames
 
 func renderStatic(_ theme: Theme) -> CGImage {
-    let width = 960, height = 300
+    let width = 960, height = 270
     return render(width: width, height: height, scale: 2) {
         theme.page.setFill()
         NSRect(x: 0, y: 0, width: width, height: height).fill()
@@ -198,10 +198,10 @@ func renderStatic(_ theme: Theme) -> CGImage {
         let big = NSSize(width: catSize.width * 1.4, height: catSize.height * 1.4)
         for (i, cell) in cells.enumerated() {
             let cx = cellW * (CGFloat(i) + 0.5)
-            let rect = NSRect(x: cx - big.width / 2, y: 110, width: big.width, height: big.height)
+            let rect = NSRect(x: cx - big.width / 2, y: 95, width: big.width, height: big.height)
             drawTemplate(frames[cell.frame]!, in: rect, color: theme.fg)
-            drawText(cell.caption, at: NSPoint(x: cx, y: 72), size: 18, color: theme.keyText, weight: .semibold, centered: true)
-            drawText(cell.frame, at: NSPoint(x: cx, y: 44), size: 13, color: theme.keyText.withAlphaComponent(0.7), weight: .regular, centered: true)
+            // Key hint only, so one image serves both the Chinese and English README.
+            drawText(cell.caption, at: NSPoint(x: cx, y: 62), size: 20, color: theme.keyText, weight: .semibold, centered: true)
         }
     }
 }
