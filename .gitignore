@@ -1,5 +1,28 @@
+# SwiftPM / Xcode
 .build/
+.swiftpm/
+*.xcodeproj/
+*.xcworkspace/
+xcuserdata/
+DerivedData/
+
+# Generated app icon (rebuilt by Scripts/generate-icon.swift)
 *.icns
+
+# Local artifacts
+Artifacts/
+dist/
+*.dmg
+
+# Secrets / signing material (never commit)
+*.p12
+*.cer
+.env
+.env.*
+
+# OS / editor
 .DS_Store
+.vscode/
+.idea/
 
 .playwright-cli/
