@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [1.0.3] - 2026-11-13
+
 ### 修复
 - 同时按住左右两侧的同一个修饰键（例如左右 Shift）时，松开其中一个后对应的爪子不再一直抬着。
 - 跟随模式下同一只手按住多个键时，松开其中一个不再让爪子提前收回，要这只手的键全部松开才收回。
@@ -14,6 +16,7 @@
 - 新增单元测试（Swift Testing），覆盖左右手键位、两种模式的帧切换、图标加载顺序。
 - 新增 `make check / run / package` 统一入口和在 push / PR 上运行的 CI。
 - 新增中英文 README、演示图和 GIF、SETUP.md。
+- 新增 MIT 许可证。
 
 ## [1.0.2] - 2026-09-10
 
@@ -42,7 +45,8 @@
 - 纯黑白风格的 app 图标。
 - 通过 Homebrew tap `zhiyozhao/tap` 和 GitHub Releases 的 DMG 分发。
 
-[Unreleased]: https://github.com/zhiyozhao/bongocat-menubar/compare/v1.0.2...HEAD
+[Unreleased]: https://github.com/zhiyozhao/bongocat-menubar/compare/v1.0.3...HEAD
+[1.0.3]: https://github.com/zhiyozhao/bongocat-menubar/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/zhiyozhao/bongocat-menubar/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/zhiyozhao/bongocat-menubar/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/zhiyozhao/bongocat-menubar/releases/tag/v1.0.0

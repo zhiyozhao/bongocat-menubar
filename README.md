@@ -138,3 +138,7 @@ defaults delete com.zhiyozhao.bongocat-menubar  # 清除保存的模式设置
 ## 更新记录
 
 见 [CHANGELOG.md](CHANGELOG.md)。
+
+## 许可证
+
+[MIT](LICENSE)

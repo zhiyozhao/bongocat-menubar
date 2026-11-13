@@ -138,3 +138,7 @@ If you enabled Launch at Login, turn it off in the menu first.
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md).
+
+## License
+
+[MIT](LICENSE)
