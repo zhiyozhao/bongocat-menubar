@@ -58,6 +58,11 @@ brew install --cask zhiyozhao/tap/bongocat-menubar
 
 ## 两种模式
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/demo-dark.png">
+  <img alt="四帧图标：待机、按 F 抬左爪、按 J 抬右爪、F 和 J 同时按下双爪" src="docs/assets/demo-light.png" width="640">
+</picture>
+
 | 模式 | 规则 |
 |---|---|
 | 跟随模式（默认） | 按住左手区的键抬左爪，右手区抬右爪，两边都按着就双爪齐拍，全部松开回到待机。 |

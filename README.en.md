@@ -58,6 +58,11 @@ Upgrade with `brew upgrade --cask bongocat-menubar`. The cask removes the downlo
 
 ## Modes
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/demo-dark.png">
+  <img alt="The four frames: idle, F raises the left paw, J the right paw, F and J together both paws" src="docs/assets/demo-light.png" width="640">
+</picture>
+
 | Mode | Behavior |
 |---|---|
 | Follow Mode (default) | Holding a left-side key raises the left paw, a right-side key the right paw, both sides together tap both paws. Releasing everything returns to idle. |
