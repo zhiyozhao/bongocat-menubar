@@ -7,7 +7,7 @@
 //
 // Output (docs/assets/):
 //   demo-light.png / demo-dark.png   static: the four frames on a mock menu bar
-//   demo-light.gif / demo-dark.gif   animated: Follow Hands mode, keys F / J
+//   demo-light.gif / demo-dark.gif   animated: Follow Mode while typing "bongo cat"
 //
 // Usage (from repo root):  swift Scripts/render-demo.swift   (or: make demo)
 
@@ -117,13 +117,14 @@ func render(width: Int, height: Int, scale: CGFloat, _ draw: () -> Void) -> CGIm
 
 /// Magnification of the menu bar so the 16pt cat is readable in a README.
 let zoom: CGFloat = 2.5
-let barHeight: CGFloat = 24 * zoom
 let catSize = NSSize(width: 16 * 89.0 / 51.0 * zoom, height: 16 * zoom)
 
 /// A slice of the right side of the menu bar: [cat] [wifi] [battery] [clock].
 /// Returns the cat rect so callers can align things under it.
 @discardableResult
-func drawMenuBar(width: CGFloat, top: CGFloat, frame: String, theme: Theme) -> NSRect {
+func drawMenuBar(width: CGFloat, top: CGFloat, frame: String, theme: Theme, zoom: CGFloat = zoom) -> NSRect {
+    let barHeight = 24 * zoom
+    let catSize = NSSize(width: 16 * 89.0 / 51.0 * zoom, height: 16 * zoom)
     let y = top - barHeight
     theme.bar.setFill()
     NSRect(x: 0, y: y, width: width, height: barHeight).fill()
@@ -156,32 +157,6 @@ func drawMenuBar(width: CGFloat, top: CGFloat, frame: String, theme: Theme) -> N
     return catRect
 }
 
-/// Two small key groups (left hand / right hand); pressed keys are inverted.
-func drawKeys(centerX: CGFloat, centerY: CGFloat, pressed: Set<String>, theme: Theme) {
-    let left = ["A", "S", "D", "F"]
-    let right = ["J", "K", "L", ";"]
-    let key: CGFloat = 34, gap: CGFloat = 6, groupGap: CGFloat = 40
-    let groupWidth = CGFloat(left.count) * key + CGFloat(left.count - 1) * gap
-    let total = groupWidth * 2 + groupGap
-    var x = centerX - total / 2
-
-    func cap(_ label: String) {
-        let r = NSRect(x: x, y: centerY - key / 2, width: key, height: key)
-        let path = NSBezierPath(roundedRect: r, xRadius: 6, yRadius: 6)
-        let down = pressed.contains(label)
-        (down ? theme.fg : theme.keyFill).setFill()
-        path.fill()
-        path.lineWidth = 1
-        (down ? theme.fg : theme.keyStroke).setStroke()
-        path.stroke()
-        drawText(label, at: NSPoint(x: r.midX, y: r.midY), size: 15, color: down ? theme.page : theme.keyText, centered: true)
-        x += key + gap
-    }
-    left.forEach(cap)
-    x += groupGap - gap
-    right.forEach(cap)
-}
-
 // MARK: - Static image: four frames
 
 func renderStatic(_ theme: Theme) -> CGImage {
@@ -206,29 +181,113 @@ func renderStatic(_ theme: Theme) -> CGImage {
     }
 }
 
-// MARK: - Animated GIF: Follow Hands mode
+// MARK: - Animated GIF: Follow Mode while typing
 
-/// (frame, pressed keys, duration in seconds)
-let script: [(String, Set<String>, Double)] = [
-    ("idle", [], 0.8),
-    ("typing_a", ["F"], 0.16), ("idle", [], 0.10),
-    ("typing_b", ["J"], 0.16), ("idle", [], 0.10),
-    ("typing_a", ["D"], 0.14), ("idle", [], 0.08),
-    ("typing_b", ["K"], 0.14), ("idle", [], 0.08),
-    ("typing_a", ["S"], 0.12), ("typing_b", ["L"], 0.12),
-    ("typing_a", ["A"], 0.12), ("typing_b", [";"], 0.12),
-    ("idle", [], 0.30),
-    ("typing_a", ["F"], 0.20), ("typing_both", ["F", "J"], 0.60),
-    ("typing_b", ["J"], 0.20), ("idle", [], 1.0),
+/// Keyboard rows; the first five keys of each row belong to the left hand
+/// (same split as KeyMap). Space is a right-hand key in the app.
+let rows: [[String]] = [
+    ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
+    ["A", "S", "D", "F", "G", "H", "J", "K", "L", ";"],
+    ["Z", "X", "C", "V", "B", "N", "M", ",", ".", "/"],
 ]
+let rightHandKeys: Set<String> = Set(rows.flatMap { $0.dropFirst(5) }).union([" "])
 
-func renderGIFFrame(_ theme: Theme, frame: String, pressed: Set<String>) -> CGImage {
-    let width = 640, height = 150
+/// Draws a small keyboard; the two hands are split by a gap, pressed keys are inverted.
+func drawKeyboard(centerX: CGFloat, top: CGFloat, pressed: Set<String>, theme: Theme) {
+    let key: CGFloat = 30, gap: CGFloat = 5, split: CGFloat = 18
+    let unit = key + gap
+    let rowWidth = CGFloat(rows[0].count) * unit - gap + split
+    let left = centerX - (rowWidth + 0.75 * unit) / 2
+    let stagger: [CGFloat] = [0, 0.25 * unit, 0.75 * unit]
+
+    func cap(_ r: NSRect, _ label: String, down: Bool) {
+        let path = NSBezierPath(roundedRect: r, xRadius: 6, yRadius: 6)
+        (down ? theme.fg : theme.keyFill).setFill()
+        path.fill()
+        path.lineWidth = 1
+        (down ? theme.fg : theme.keyStroke).setStroke()
+        path.stroke()
+        if !label.isEmpty {
+            drawText(label, at: NSPoint(x: r.midX, y: r.midY), size: 13, color: down ? theme.page : theme.keyText, centered: true)
+        }
+    }
+
+    for (i, row) in rows.enumerated() {
+        let y = top - CGFloat(i) * unit - key
+        for (j, label) in row.enumerated() {
+            let x = left + stagger[i] + CGFloat(j) * unit + (j >= 5 ? split : 0)
+            cap(NSRect(x: x, y: y, width: key, height: key), label, down: pressed.contains(label))
+        }
+    }
+    // Space bar under C ... M
+    let y = top - 3 * unit - key
+    let x0 = left + stagger[2] + 2 * unit
+    let x1 = left + stagger[2] + 6 * unit + split + key
+    cap(NSRect(x: x0, y: y, width: x1 - x0, height: key), "", down: pressed.contains(" "))
+}
+
+/// One keystroke: key label, time it goes down, time it comes up (seconds).
+struct Stroke { let key: String; let down: Double; let up: Double }
+
+/// Typing "bongo cat" at a natural pace. "g" and "o" overlap briefly, like real
+/// rolling keystrokes, so both paws come down for a moment.
+let strokes: [Stroke] = [
+    .init(key: "B", down: 0.90, up: 1.00),
+    .init(key: "O", down: 1.08, up: 1.17),
+    .init(key: "N", down: 1.24, up: 1.33),
+    .init(key: "G", down: 1.40, up: 1.52),
+    .init(key: "O", down: 1.46, up: 1.58),
+    .init(key: " ", down: 1.72, up: 1.81),
+    .init(key: "C", down: 1.92, up: 2.02),
+    .init(key: "A", down: 2.08, up: 2.17),
+    .init(key: "T", down: 2.24, up: 2.36),
+]
+let loopLength = 4.0
+
+struct Shot { let frame: String; let pressed: Set<String>; let typed: String; let duration: Double }
+
+/// Turns the keystrokes into GIF frames with the app's Follow Mode rule:
+/// a paw is down while any key on its side is held.
+func timeline() -> [Shot] {
+    var times = Set([0.0, loopLength])
+    strokes.forEach { times.insert($0.down); times.insert($0.up) }
+    let sorted = times.sorted()
+    var shots: [Shot] = []
+    for (t, next) in zip(sorted, sorted.dropFirst()) {
+        let held = strokes.filter { $0.down <= t && t < $0.up }.map(\.key)
+        let leftDown = held.contains { !rightHandKeys.contains($0) }
+        let rightDown = held.contains { rightHandKeys.contains($0) }
+        let frame: String
+        switch (leftDown, rightDown) {
+        case (true, true): frame = "typing_both"
+        case (true, false): frame = "typing_a"
+        case (false, true): frame = "typing_b"
+        default: frame = "idle"
+        }
+        let typed = strokes.filter { $0.down <= t }.map { $0.key.lowercased() }.joined()
+        shots.append(Shot(frame: frame, pressed: Set(held), typed: typed, duration: next - t))
+    }
+    return shots
+}
+
+func renderGIFFrame(_ theme: Theme, _ shot: Shot) -> CGImage {
+    let width = 720, height = 330
     return render(width: width, height: height, scale: 2) {
         theme.page.setFill()
         NSRect(x: 0, y: 0, width: width, height: height).fill()
-        drawMenuBar(width: CGFloat(width), top: CGFloat(height), frame: frame, theme: theme)
-        drawKeys(centerX: CGFloat(width) / 2, centerY: 45, pressed: pressed, theme: theme)
+        drawMenuBar(width: CGFloat(width), top: CGFloat(height), frame: shot.frame, theme: theme, zoom: 3.5)
+
+        // Text being typed, with a caret.
+        let font = NSFont.systemFont(ofSize: 24, weight: .regular)
+        let attrs: [NSAttributedString.Key: Any] = [.font: font, .foregroundColor: theme.fg]
+        let full = NSAttributedString(string: "bongo cat", attributes: attrs).size()
+        let typed = NSAttributedString(string: shot.typed, attributes: attrs)
+        let textX = CGFloat(width) / 2 - full.width / 2, textY: CGFloat = 196
+        typed.draw(at: NSPoint(x: textX, y: textY - full.height / 2))
+        theme.fg.setFill()
+        NSRect(x: textX + typed.size().width + 1, y: textY - 13, width: 2, height: 26).fill()
+
+        drawKeyboard(centerX: CGFloat(width) / 2, top: 160, pressed: shot.pressed, theme: theme)
     }
 }
 
@@ -264,6 +323,6 @@ for theme in [light, dark] {
     let png = "\(outDir)/demo-\(theme.name).png"
     try writePNG(renderStatic(theme), to: png)
     let gif = "\(outDir)/demo-\(theme.name).gif"
-    writeGIF(script.map { (renderGIFFrame(theme, frame: $0.0, pressed: $0.1), $0.2) }, to: gif)
+    writeGIF(timeline().map { (renderGIFFrame(theme, $0), $0.duration) }, to: gif)
     print("wrote \(png)\nwrote \(gif)")
 }
