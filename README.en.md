@@ -6,6 +6,7 @@ Bongo Cat for the macOS menu bar: it taps its paws while you type. No window, no
 
 [![Release](https://img.shields.io/github/v/release/zhiyozhao/bongocat-menubar)](https://github.com/zhiyozhao/bongocat-menubar/releases/latest)
 [![check](https://img.shields.io/github/actions/workflow/status/zhiyozhao/bongocat-menubar/check.yml?branch=master&label=check)](https://github.com/zhiyozhao/bongocat-menubar/actions/workflows/check.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-black)](LICENSE)
 ![macOS 13+](https://img.shields.io/badge/macOS-13%2B-black)
 ![Universal](https://img.shields.io/badge/Apple%20Silicon%20%2B%20Intel-universal-black)
 
