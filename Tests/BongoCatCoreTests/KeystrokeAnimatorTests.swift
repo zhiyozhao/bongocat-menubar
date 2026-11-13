@@ -165,6 +165,81 @@ struct NormalModeTests {
     }
 }
 
+@Suite("Follow Hands mode: recovering lost key-up events")
+struct LostKeyUpTests {
+    /// Fake keyboard state that the animator queries instead of CGEventSource.
+    final class FakeKeyboard {
+        var down: Set<UInt16> = []
+    }
+
+    private func make() -> (KeystrokeAnimator, Recorder, FakeKeyboard) {
+        let (animator, rec) = makeAnimator(followHands: true)
+        let keyboard = FakeKeyboard()
+        animator.isKeyDown = { keyboard.down.contains($0) }
+        return (animator, rec, keyboard)
+    }
+
+    @Test("periodic check drops a key whose key-up was lost and lowers the paw")
+    func periodicCheck() {
+        let (animator, rec, kb) = make()
+        kb.down = [keyA]
+        animator.keyDown(keycode: keyA)
+        #expect(animator.pruneTimer != nil)
+        kb.down = []                       // released, but no keyUp delivered
+        animator.pruneReleasedKeys()
+        #expect(rec.frames == ["typing_a", "idle"])
+        #expect(animator.pruneTimer == nil)
+    }
+
+    @Test("the next key event also drops stale keys")
+    func onNextEvent() {
+        let (animator, rec, kb) = make()
+        kb.down = [keyA]
+        animator.keyDown(keycode: keyA)
+        kb.down = [keyJ]                   // A was released silently, J pressed
+        animator.keyDown(keycode: keyJ)
+        #expect(rec.frames == ["typing_a", "typing_b"])
+    }
+
+    @Test("keys still physically down are kept")
+    func keepsHeldKeys() {
+        let (animator, rec, kb) = make()
+        kb.down = [keyA, keyS]
+        animator.keyDown(keycode: keyA)
+        animator.keyDown(keycode: keyS)
+        animator.pruneReleasedKeys()
+        #expect(rec.frames == ["typing_a"])
+        #expect(animator.pruneTimer != nil)
+    }
+
+    @Test("the event's own key is trusted even if the live state already says up")
+    func eventKeyTrusted() {
+        let (animator, rec, kb) = make()
+        kb.down = []                       // very fast tap: already up when we look
+        animator.keyDown(keycode: keyA)
+        #expect(rec.frames == ["typing_a"])
+    }
+
+    @Test("periodic check stops when nothing is held and on mode switch")
+    func timerLifecycle() {
+        let (animator, _, kb) = make()
+        kb.down = [keyA]
+        animator.keyDown(keycode: keyA)
+        animator.keyUp(keycode: keyA)
+        #expect(animator.pruneTimer == nil)
+        animator.keyDown(keycode: keyA)
+        animator.followHands = false
+        #expect(animator.pruneTimer == nil)
+    }
+
+    @Test("without a key-state source no periodic check is scheduled")
+    func noSource() {
+        let (animator, _) = makeAnimator(followHands: true)
+        animator.keyDown(keycode: keyA)
+        #expect(animator.pruneTimer == nil)
+    }
+}
+
 @Suite("Switching modes")
 struct ModeSwitchTests {
     @Test("a key held through Follow → Normal → Follow does not stay 'down'")

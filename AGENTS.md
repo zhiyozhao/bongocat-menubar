@@ -47,6 +47,6 @@ make demo      # 重新生成 docs/assets/ 的演示 PNG/GIF
 - universal 构建 `swift build -c release --arch arm64 --arch x86_64` 的产物在 `.build/apple/Products/Release/`。
 - CGEvent tap 会被系统停用（超时或权限变化），`KeyboardMonitor` 收到 `.tapDisabledBy*` 时重新启用。
 - 修饰键走 `flagsChanged`，左右同名键要看 device 位（见 `ModifierKeys.swift`）。Caps Lock 在左手键表里，但 `flagsChanged` 对它总判为松开，目前不触发动画。
-- 跟随模式按实际按住的 keycode 集合跟踪每只手，某侧集合为空才收回该侧爪子。
+- 跟随模式按实际按住的 keycode 集合跟踪每只手，某侧集合为空才收回该侧爪子。丢失的 keyUp 由 `isKeyDown`（app 里是 `CGEventSource.keyState`）兜底：每个事件和按住期间每 1 秒核对一次。
 - ad-hoc 签名每次构建都会让辅助功能授权失效：`tccutil reset Accessibility com.zhiyozhao.bongocat-menubar` 后重新授权。
 - 这不是 Developer ID 签名，DMG 直接下载会被 Gatekeeper 提示；cask 在 postflight 里 `xattr -cr`。

@@ -12,6 +12,13 @@ public class KeystrokeAnimator {
     private var leftHeld: Set<UInt16> = []
     private var rightHeld: Set<UInt16> = []
 
+    /// Asks the system whether a keycode is physically down right now. Used to drop
+    /// held keys whose key-up event never reached us (e.g. released while macOS
+    /// Secure Input was on). `nil` disables the check.
+    public var isKeyDown: ((UInt16) -> Bool)?
+    static let pruneInterval: TimeInterval = 1.0
+    private(set) var pruneTimer: Timer?
+
     // Normal mode state
     private let minInterval: TimeInterval = 1.0 / 60.0
     static let idleDelay: TimeInterval = 0.5
@@ -46,6 +53,7 @@ public class KeystrokeAnimator {
     private func resetState() {
         leftHeld.removeAll()
         rightHeld.removeAll()
+        stopPruneTimer()
         idleTimer?.invalidate()
         idleTimer = nil
         toggleFlag = false
@@ -59,6 +67,7 @@ public class KeystrokeAnimator {
     // MARK: - Follow Hands Mode (BongoCat style)
 
     private func handleFollowDown(_ hand: Hand, keycode: UInt16) {
+        dropReleasedKeys(except: keycode)
         if hand == .left {
             leftHeld.insert(keycode)
         } else {
@@ -68,6 +77,7 @@ public class KeystrokeAnimator {
     }
 
     private func handleFollowUp(_ hand: Hand, keycode: UInt16) {
+        dropReleasedKeys(except: keycode)
         if hand == .left {
             leftHeld.remove(keycode)
         } else {
@@ -76,7 +86,41 @@ public class KeystrokeAnimator {
         updateFollowFrame()
     }
 
+    /// Remove held keys the system reports as up, then refresh the frame.
+    /// Called on every Follow-mode event and by the periodic check.
+    func pruneReleasedKeys() {
+        dropReleasedKeys(except: nil)
+        updateFollowFrame()
+    }
+
+    /// The key of the event being handled is excluded: its own down/up event is
+    /// authoritative, and the async hop to the main thread means the live key
+    /// state may already be newer than the event.
+    private func dropReleasedKeys(except keycode: UInt16?) {
+        guard let isKeyDown else { return }
+        leftHeld = leftHeld.filter { $0 == keycode || isKeyDown($0) }
+        rightHeld = rightHeld.filter { $0 == keycode || isKeyDown($0) }
+    }
+
+    private func updatePruneTimer() {
+        let holding = !leftHeld.isEmpty || !rightHeld.isEmpty
+        if holding && isKeyDown != nil {
+            guard pruneTimer == nil else { return }
+            pruneTimer = Timer.scheduledTimer(withTimeInterval: Self.pruneInterval, repeats: true) { [weak self] _ in
+                self?.pruneReleasedKeys()
+            }
+        } else {
+            stopPruneTimer()
+        }
+    }
+
+    private func stopPruneTimer() {
+        pruneTimer?.invalidate()
+        pruneTimer = nil
+    }
+
     private func updateFollowFrame() {
+        updatePruneTimer()
         let frame: String
         switch (!leftHeld.isEmpty, !rightHeld.isEmpty) {
         case (true, true):   frame = "typing_both"

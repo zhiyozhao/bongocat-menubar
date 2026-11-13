@@ -20,6 +20,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         let savedFollowHands = UserDefaults.standard.object(forKey: "followHands") as? Bool ?? true
         animator.followHands = savedFollowHands
+        animator.isKeyDown = { keycode in
+            CGEventSource.keyState(.combinedSessionState, key: CGKeyCode(keycode))
+        }
 
         animator.onFrameChange = { [weak self] frame in
             self?.statusItem.button?.image = self?.iconManager.icon(for: frame)
