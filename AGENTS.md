@@ -1,6 +1,6 @@
 # AGENTS.md — BongoCat Menubar
 
-macOS 菜单栏 Bongo Cat（无 Dock 图标），跟着键盘敲击做动画。纯 Swift + AppKit，SwiftPM 构建，无第三方依赖。用户文档见 `README.md`，环境与重建见 `SETUP.md`。
+macOS 菜单栏 Bongo Cat（无 Dock 图标），跟着键盘敲击做动画。纯 Swift + AppKit，SwiftPM 构建，无第三方依赖。用户文档见 `README.md`（产品视角，不写实现细节），开发文档见 `docs/DEVELOPMENT.md`，环境与重建见 `SETUP.md`。
 
 ## 命令
 
@@ -16,7 +16,7 @@ make demo      # 重新生成 docs/assets/ 的演示 PNG/GIF
 
 ## 完成定义
 
-`make check` 全绿；改了逻辑就加或改 `Tests/BongoCatCoreTests/` 的测试；用户可见变化写进 `CHANGELOG.md` 的 Unreleased；已提交（Conventional Commits）。
+`make check` 全绿；改了逻辑就加或改 `Tests/BongoCatCoreTests/` 的测试；用户可见变化用用户语言写进 `CHANGELOG.md` 的 Unreleased（纯工程改动只写“内部改进”，细节记到 `docs/DEVELOPMENT.md`）；已提交（Conventional Commits）。
 
 ## 结构约定
 
