@@ -1,6 +1,6 @@
 # AGENTS.md — BongoCat Menubar
 
-macOS 菜单栏 Bongo Cat（无 Dock 图标），跟着键盘敲击做动画。纯 Swift + AppKit，SwiftPM 构建，无第三方依赖。用户文档见 `README.md`（产品视角，不写实现细节），开发文档见 `docs/DEVELOPMENT.md`，环境与重建见 `SETUP.md`。
+macOS 菜单栏 Bongo Cat（无 Dock 图标），跟着键盘敲击做动画。纯 Swift + AppKit，SwiftPM 构建，无第三方依赖。用户文档见 `README.md`（产品视角，不写实现细节），开发文档见 `docs/DEVELOPMENT.md`，官网源码在 `site/`（GitHub Pages，见开发文档），环境与重建见 `SETUP.md`。
 
 ## 命令
 
@@ -9,7 +9,7 @@ make check     # plutil/bash 语法检查 + swift build + swift test（CI 跑的
 make run       # Scripts/build-app.sh 打包后前台运行，Ctrl-C 退出
 make package   # .build/release/BongoCat Menubar.app + BongoCat-Menubar-v<version>.dmg
 make icon      # 重新生成 Resources/AppIcon.icns（gitignored）
-make demo      # 重新生成 docs/assets/ 的演示 PNG/GIF
+make demo      # 重新生成 docs/assets/ 的演示 GIF
 ```
 
 工具链：Xcode 16+（Swift Testing 需要），本机验证 Xcode 26.3 / Swift 6.2。最低系统 macOS 13。

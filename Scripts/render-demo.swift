@@ -6,7 +6,6 @@
 // Resources/Icons/*.svg — no screen capture involved.
 //
 // Output (docs/assets/):
-//   demo-light.png / demo-dark.png   static: the four frames on a mock menu bar
 //   demo-light.gif / demo-dark.gif   animated: Follow Mode while typing "bongo cat"
 //
 // Usage (from repo root):  swift Scripts/render-demo.swift   (or: make demo)
@@ -116,8 +115,7 @@ func render(width: Int, height: Int, scale: CGFloat, _ draw: () -> Void) -> CGIm
 // MARK: - Scene pieces
 
 /// Magnification of the menu bar so the 16pt cat is readable in a README.
-let zoom: CGFloat = 2.5
-let catSize = NSSize(width: 16 * 89.0 / 51.0 * zoom, height: 16 * zoom)
+let zoom: CGFloat = 3.5
 
 /// A slice of the right side of the menu bar: [cat] [wifi] [battery] [clock].
 /// Returns the cat rect so callers can align things under it.
@@ -155,30 +153,6 @@ func drawMenuBar(width: CGFloat, top: CGFloat, frame: String, theme: Theme, zoom
     let catRect = NSRect(x: x, y: mid - catSize.height / 2, width: catSize.width, height: catSize.height)
     drawTemplate(frames[frame]!, in: catRect, color: theme.fg)
     return catRect
-}
-
-// MARK: - Static image: four frames
-
-func renderStatic(_ theme: Theme) -> CGImage {
-    let width = 960, height = 270
-    return render(width: width, height: height, scale: 2) {
-        theme.page.setFill()
-        NSRect(x: 0, y: 0, width: width, height: height).fill()
-        drawMenuBar(width: CGFloat(width), top: CGFloat(height), frame: "typing_both", theme: theme)
-
-        let cells: [(frame: String, caption: String)] = [
-            ("idle", "—"), ("typing_a", "F"), ("typing_b", "J"), ("typing_both", "F + J"),
-        ]
-        let cellW = CGFloat(width) / CGFloat(cells.count)
-        let big = NSSize(width: catSize.width * 1.4, height: catSize.height * 1.4)
-        for (i, cell) in cells.enumerated() {
-            let cx = cellW * (CGFloat(i) + 0.5)
-            let rect = NSRect(x: cx - big.width / 2, y: 95, width: big.width, height: big.height)
-            drawTemplate(frames[cell.frame]!, in: rect, color: theme.fg)
-            // Key hint only, so one image serves both the Chinese and English README.
-            drawText(cell.caption, at: NSPoint(x: cx, y: 62), size: 20, color: theme.keyText, weight: .semibold, centered: true)
-        }
-    }
 }
 
 // MARK: - Animated GIF: Follow Mode while typing
@@ -275,7 +249,7 @@ func renderGIFFrame(_ theme: Theme, _ shot: Shot) -> CGImage {
     return render(width: width, height: height, scale: 2) {
         theme.page.setFill()
         NSRect(x: 0, y: 0, width: width, height: height).fill()
-        drawMenuBar(width: CGFloat(width), top: CGFloat(height), frame: shot.frame, theme: theme, zoom: 3.5)
+        drawMenuBar(width: CGFloat(width), top: CGFloat(height), frame: shot.frame, theme: theme)
 
         // Text being typed, with a caret.
         let font = NSFont.systemFont(ofSize: 24, weight: .regular)
@@ -289,11 +263,6 @@ func renderGIFFrame(_ theme: Theme, _ shot: Shot) -> CGImage {
 
         drawKeyboard(centerX: CGFloat(width) / 2, top: 160, pressed: shot.pressed, theme: theme)
     }
-}
-
-func writePNG(_ image: CGImage, to path: String) throws {
-    let rep = NSBitmapImageRep(cgImage: image)
-    try rep.representation(using: .png, properties: [:])!.write(to: URL(fileURLWithPath: path))
 }
 
 func writeGIF(_ images: [(CGImage, Double)], to path: String) {
@@ -320,9 +289,7 @@ func writeGIF(_ images: [(CGImage, Double)], to path: String) {
 }
 
 for theme in [light, dark] {
-    let png = "\(outDir)/demo-\(theme.name).png"
-    try writePNG(renderStatic(theme), to: png)
     let gif = "\(outDir)/demo-\(theme.name).gif"
     writeGIF(timeline().map { (renderGIFFrame(theme, $0), $0.duration) }, to: gif)
-    print("wrote \(png)\nwrote \(gif)")
+    print("wrote \(gif)")
 }

@@ -31,7 +31,7 @@ package:
 icon:
 	swift Scripts/generate-icon.swift
 
-## demo: 重新生成 README 演示图和 GIF（docs/assets/）
+## demo: 重新生成 README 演示 GIF（docs/assets/）
 demo:
 	swift Scripts/render-demo.swift
 

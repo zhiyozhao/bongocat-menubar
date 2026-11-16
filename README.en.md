@@ -1,8 +1,8 @@
 # BongoCat Menubar
 
-[中文](README.md) | English
+[中文](README.md) | English · [Website](https://zhiyozhao.github.io/bongocat-menubar/en/)
 
-A Bongo Cat that lives in your Mac's menu bar. You type, it taps its paws.
+A Bongo Cat that lives in your Mac's menu bar. You type, it taps its paws. Free and open source.
 
 [![Latest release](https://img.shields.io/github/v/release/zhiyozhao/bongocat-menubar?label=latest)](https://github.com/zhiyozhao/bongocat-menubar/releases/latest)
 ![macOS 13+](https://img.shields.io/badge/macOS-13%2B-black)
@@ -16,21 +16,21 @@ A Bongo Cat that lives in your Mac's menu bar. You type, it taps its paws.
 brew install --cask zhiyozhao/tap/bongocat-menubar
 ```
 
-Not using Homebrew? Download the DMG from [Releases](https://github.com/zhiyozhao/bongocat-menubar/releases/latest) and drag the app into Applications.
+Not using Homebrew? Download the DMG from [Releases](https://github.com/zhiyozhao/bongocat-menubar/releases/latest) and drag the app into Applications. Runs on macOS 13 or later, on both Apple silicon and Intel Macs.
+
+Want to see it first? Type a few keys on the [website](https://zhiyozhao.github.io/bongocat-menubar/en/).
 
 ## Highlights
 
-- Type with your left hand and the left paw taps; type with your right hand and the right paw taps. Press both sides at once and both paws come down.
+- Type with your left hand and the left paw taps, with your right hand and the right paw taps. Press both sides at once and both paws come down. Shift, Command and the other modifiers count too, left and right separately.
 - Takes up one icon in the menu bar. No window, nothing in the Dock.
-- Shift, Control, Option and Command count too, left and right separately.
-- Easy to see on both light and dark menu bars.
-- Can start automatically when you log in.
+- No network access, and it never reads what you type.
+- Easy to see on light and dark menu bars. Can start automatically when you log in.
 - English and Chinese interface, following your system language.
-- Runs on macOS 13 or later, on both Apple silicon and Intel Macs.
 
 ## First launch
 
-1. Open BongoCat Menubar. The cat appears in the menu bar.
+1. Open BongoCat Menubar. The cat appears on the right side of the menu bar.
 2. It asks for Accessibility permission. Click "Open Settings" and turn on BongoCat Menubar under System Settings → Privacy & Security → Accessibility.
 3. No need to restart the app. Within two seconds the cat starts typing along with you.
 
@@ -42,12 +42,7 @@ Click the cat in the menu bar to switch modes, turn Launch at Login on or off, o
 
 ## Two modes
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/demo-dark.png">
-  <img alt="The cat's four poses: resting when you are not typing; F taps the left paw; J taps the right paw; F and J together tap both paws" src="docs/assets/demo-light.png" width="720">
-</picture>
-
-- **Follow Mode** (default): keys on the left half of the keyboard tap the left paw, keys on the right half (including Space and the arrow keys) tap the right paw. Hold a key and the paw stays down until you let go.
+- **Follow Mode** (default): keys on the left half of the keyboard tap the left paw, keys on the right half tap the right paw. Space and the arrow keys count as right. Hold a key and the paw stays down until you let go.
 - **Normal Mode**: no left or right. Every key press alternates the paws. Half a second after you stop, the cat rests again.
 
 The app remembers which mode you chose.
@@ -62,7 +57,10 @@ The app remembers which mode you chose.
 ## FAQ
 
 **Opening the app from the DMG says the developer cannot be verified.**
-The app is not notarized by Apple, so macOS blocks the first launch. Go to System Settings → Privacy & Security and click "Open Anyway" near the bottom. It will not ask again. Installing with Homebrew avoids this prompt.
+The app is not notarized by Apple, so macOS blocks the first launch. Open it once, then go to System Settings → Privacy & Security, click "Open Anyway" near the bottom and confirm. It will not ask again. Installing with Homebrew avoids this prompt.
+
+**It is installed, but I can't find the cat in the menu bar.**
+When the menu bar is full, MacBooks with a notch hide the icons that don't fit behind the notch. Quit a few menu bar apps you rarely use, or hold Command and drag unneeded system icons out of the menu bar, and the cat will show up.
 
 **I granted permission but the cat does not move.**
 In System Settings → Privacy & Security → Accessibility, turn BongoCat Menubar off and on again. If that does not help, remove it with the "−" button below the list, reopen the app and grant permission again.
