@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://zhiyozhao.github.io/bongocat-menubar/sitemap.xml
