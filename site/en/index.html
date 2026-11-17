@@ -4,16 +4,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>BongoCat Menubar: you type, it taps along</title>
-  <meta name="description" content="A cat in your Mac menu bar that taps its paws as you type: left hand, left paw; right hand, right paw. Free and open source, no network access, macOS 13 or later.">
+  <meta name="description" content="A cat in your Mac menu bar that taps its paws as you type: left hand, left paw; right hand, right paw. Free and open source, macOS 13 or later.">
   <link rel="canonical" href="https://zhiyozhao.github.io/bongocat-menubar/en/">
   <link rel="alternate" hreflang="zh-CN" href="https://zhiyozhao.github.io/bongocat-menubar/">
   <link rel="alternate" hreflang="en" href="https://zhiyozhao.github.io/bongocat-menubar/en/">
   <link rel="alternate" hreflang="x-default" href="https://zhiyozhao.github.io/bongocat-menubar/">
-  <meta name="theme-color" content="#ececee" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#2a2a2e" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#18181a" media="(prefers-color-scheme: dark)">
   <meta property="og:type" content="website">
   <meta property="og:title" content="BongoCat Menubar: you type, it taps along">
-  <meta property="og:description" content="A cat in your Mac menu bar that taps along as you type. Free and open source.">
+  <meta property="og:description" content="A cat in your Mac menu bar that taps its paws as you type: left hand, left paw; right hand, right paw. Free and open source, macOS 13 or later.">
   <meta property="og:url" content="https://zhiyozhao.github.io/bongocat-menubar/en/">
   <meta property="og:image" content="https://zhiyozhao.github.io/bongocat-menubar/assets/og-en.png">
   <meta property="og:locale" content="en_US">
@@ -22,31 +22,18 @@
   <link rel="apple-touch-icon" href="../assets/icon-180.png">
   <link rel="stylesheet" href="../style.css">
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "BongoCat Menubar", "applicationCategory": "UtilitiesApplication", "operatingSystem": "macOS 13 or later", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "downloadUrl": "https://github.com/zhiyozhao/bongocat-menubar/releases/latest", "url": "https://zhiyozhao.github.io/bongocat-menubar/en/", "inLanguage": "en"}</script>
-  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "The cat doesn’t move.", "acceptedAnswer": {"@type": "Answer", "text": "It is normal for the cat to stay still while you type a password: macOS does not share those key presses with any app. The numeric keypad, Caps Lock, fn, Home, End, Page Up, Page Down, Forward Delete and F13 and above do not trigger a tap. If the cat’s menu shows an “Accessibility” item, permission is not granted yet: click it and turn the switch on. If permission is granted and the cat still doesn’t move, go to System Settings → Privacy & Security → Accessibility and turn BongoCat Menubar off and on again."}}, {"@type": "Question", "name": "I can’t find the cat in the menu bar.", "acceptedAnswer": {"@type": "Answer", "text": "On MacBooks with a notch, menu bar icons that don’t fit are hidden behind the notch. Quit a few menu bar apps and it will show up."}}, {"@type": "Question", "name": "How do I upgrade?", "acceptedAnswer": {"@type": "Answer", "text": "brew upgrade --cask bongocat-menubar. The upgrade quits the cat; open it again from Applications afterwards. With the DMG, choose “Quit” in the cat’s menu first, then replace the app with the new one. You don’t need to grant permission again."}}, {"@type": "Question", "name": "How do I uninstall?", "acceptedAnswer": {"@type": "Answer", "text": "If you turned on Launch at Login, turn it off in the cat’s menu first. Then run brew uninstall --cask bongocat-menubar, or drag the app to the Trash."}}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "The cat doesn’t move.", "acceptedAnswer": {"@type": "Answer", "text": "Open the cat’s menu. If it shows an “Accessibility” item, permission isn’t granted yet: click it and turn the switch on. If permission is granted, turn the switch off and on again in Settings. The cat stays still while you type a password; that’s normal."}}, {"@type": "Question", "name": "I can’t find the cat in the menu bar.", "acceptedAnswer": {"@type": "Answer", "text": "When the menu bar is full, the notch hides the cat. Quit a few menu bar apps and it will show up."}}, {"@type": "Question", "name": "Does it record what I type?", "acceptedAnswer": {"@type": "Answer", "text": "No. It has no network access and saves no keystrokes."}}, {"@type": "Question", "name": "How do I upgrade?", "acceptedAnswer": {"@type": "Answer", "text": "brew upgrade --cask bongocat-menubar, then open the app again. No need to grant permission again."}}, {"@type": "Question", "name": "How do I uninstall?", "acceptedAnswer": {"@type": "Answer", "text": "brew uninstall --cask bongocat-menubar, or drag the app to the Trash."}}]}</script>
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
-  <header class="menubar">
-    <div class="wrap">
-      <a class="app" href="./"><img src="../assets/icon-64.png" alt="" width="20" height="20">BongoCat Menubar</a>
-      <nav aria-label="Page"><a href="#diff">What’s different</a><a href="#faq">FAQ</a><a href="https://github.com/zhiyozhao/bongocat-menubar">GitHub</a></nav>
-      <div class="tray">
-        <span class="cat" data-frame="idle" aria-hidden="true"><i class="idle"></i><i class="a"></i><i class="b"></i><i class="both"></i></span>
-        <span class="clock" aria-hidden="true">12:14</span>
-        <a class="install-btn" href="#install">Install</a>
-        <a class="lang" href="../" hreflang="zh-CN" lang="zh-CN">中文</a>
-      </div>
-    </div>
+  <header class="top">
+    <a class="icon-link" href="https://github.com/zhiyozhao/bongocat-menubar" aria-label="GitHub" title="GitHub"><svg viewBox="0 0 16 16" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg></a>
+    <a class="icon-link" href="../" hreflang="zh-CN" lang="zh-CN" aria-label="中文" title="中文"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/></svg></a>
   </header>
 
-  <main id="main" class="wrap">
+  <main>
     <section class="hero">
-      <div class="intro">
-        <h1>You type,<br><mark>it taps along.</mark></h1>
-        <p class="lede">A cat in your Mac menu bar. Type with your left hand and it taps its left paw, with your right hand and it taps its right.</p>
-        <div class="actions"><a class="button primary" href="#install">Install</a><a class="button" href="https://github.com/zhiyozhao/bongocat-menubar/releases/latest">Download DMG</a></div>
-      </div>
-
+      <div class="title"><img src="../assets/icon-128.png" alt="" width="64" height="64"><h1>BongoCat Menubar</h1></div>
+      <p class="lede">A cat in your Mac menu bar. You type, it taps its paws:<br>left hand, left paw; right hand, right paw.</p>
       <figure class="demo" aria-label="Demo: the top right of the menu bar, magnified. Type or tap the keys below and the cat taps along">
         <div class="demo-bar">
           <span class="cat" data-frame="idle" aria-hidden="true"><i class="idle"></i><i class="a"></i><i class="b"></i><i class="both"></i></span>
@@ -58,60 +45,42 @@
           <div class="row"><span class="key" data-code="KeyZ">Z</span><span class="key" data-code="KeyX">X</span><span class="key" data-code="KeyC">C</span><span class="key" data-code="KeyV">V</span><span class="key" data-code="KeyB">B</span><span class="split"></span><span class="key" data-code="KeyN">N</span><span class="key" data-code="KeyM">M</span><span class="key" data-code="Comma">,</span><span class="key" data-code="Period">.</span><span class="key" data-code="Slash">/</span></div>
           <div class="row"><span class="key space" data-code="Space"></span></div>
         </div>
-        <div class="demo-foot">
-          <p class="hint"><span class="pointer">Try typing, or click the keys above.</span><span class="touch">Tap the keys above to try it.</span></p>
-          <fieldset class="modes">
-            <legend>Mode</legend>
-            <label><input type="radio" name="mode" value="follow" checked>Follow Mode</label>
-            <label><input type="radio" name="mode" value="normal">Normal Mode</label>
-          </fieldset>
-        </div>
+        <p class="hint"><span class="pointer">Try typing, or click the keys above.</span><span class="touch">Tap the keys above to try it.</span></p>
       </figure>
+      <a class="more" href="#install">Install <span aria-hidden="true">↓</span></a>
     </section>
 
-    <section id="install" class="section">
-      <h2>Install</h2>
-      <ol class="steps">
-        <li><h3>Install it</h3>
-          <div class="install"><code>brew install --cask zhiyozhao/tap/bongocat-menubar</code><button class="copy" type="button" data-copy="brew install --cask zhiyozhao/tap/bongocat-menubar" data-done="Copied" aria-label="Copy install command">Copy</button></div>
-          <p class="muted">Or <a href="https://github.com/zhiyozhao/bongocat-menubar/releases/latest">download the DMG</a> and drag the app into Applications. Requires macOS 13 or later, on Apple silicon or Intel.</p></li>
-        <li><h3>First launch (DMG only)</h3><p class="muted">macOS says it cannot verify the developer, because the app is not notarized by Apple. Go to System Settings → Privacy &amp; Security and click “Open Anyway” at the bottom.</p></li>
-        <li><h3>Grant Accessibility permission</h3><p class="muted">On first launch a prompt appears. Click “Open Settings”, then “Open System Settings” in the system dialog that follows, and turn on BongoCat Menubar in the Accessibility list. The cat starts moving within two seconds, no restart needed. If you clicked “Later”, click the cat in the menu bar and choose “Accessibility”.</p>
-          <p class="why">macOS only tells apps with this permission which keys you press. BongoCat Menubar uses it only to see key presses. It never reads the text you type, and never blocks or types keys for you.</p></li>
-      </ol>
-    </section>
-
-    <section id="diff" class="section">
-      <h2>How it differs from other <span class="nw">Bongo Cats</span></h2>
-      <div class="two">
-        <div><h3>Menu bar only</h3><p class="muted">No window, nothing in the Dock, nothing covering your screen.</p></div>
-        <div><h3>Knows your hands</h3><p class="muted">Left-hand keys tap the left paw, right-hand keys the right paw, both at once tap both. If you’d rather not split hands, click the cat in the menu bar and choose “Normal Mode”, where every key press alternates the paws.</p></div>
-        <div><h3>No network</h3><p class="muted">No keystroke logging, and it never reads what you type.</p></div>
-        <div><h3>Free and open source</h3><p class="muted">MIT license. No ads, no account, no in-app purchases.</p></div>
-      </div>
-      <p class="note">Deliberately left out: desktop pets, points, hats, skins.</p>
-    </section>
-
-    <section id="faq" class="section">
-      <h2>FAQ</h2>
-      <details><summary>The cat doesn’t move.</summary><p>It is normal for the cat to stay still while you type a password: macOS does not share those key presses with any app. The numeric keypad, Caps Lock, fn, Home, End, Page Up, Page Down, Forward Delete and F13 and above do not trigger a tap. If the cat’s menu shows an “Accessibility” item, permission is not granted yet: click it and turn the switch on. If permission is granted and the cat still doesn’t move, go to System Settings → Privacy &amp; Security → Accessibility and turn BongoCat Menubar off and on again.</p></details>
-      <details><summary>I can’t find the cat in the menu bar.</summary><p>On MacBooks with a notch, menu bar icons that don’t fit are hidden behind the notch. Quit a few menu bar apps and it will show up.</p></details>
-      <details><summary>How do I upgrade?</summary><p><code>brew upgrade --cask bongocat-menubar</code>. The upgrade quits the cat; open it again from Applications afterwards. With the DMG, choose “Quit” in the cat’s menu first, then replace the app with the new one. You don’t need to grant permission again.</p></details>
-      <details><summary>How do I uninstall?</summary><p>If you turned on Launch at Login, turn it off in the cat’s menu first. Then run <code>brew uninstall --cask bongocat-menubar</code>, or drag the app to the Trash.</p></details>
-    </section>
-  </main>
-
-  <footer>
     <div class="wrap">
-      <span>BongoCat Menubar, MIT license.</span>
-      <nav aria-label="Footer">
-        <a href="https://github.com/zhiyozhao/bongocat-menubar">GitHub</a>
-        <a href="https://github.com/zhiyozhao/bongocat-menubar/releases/latest">Download</a>
-        <a href="https://github.com/zhiyozhao/bongocat-menubar/blob/master/CHANGELOG.md">Changelog</a>
-        <a href="../" hreflang="zh-CN" lang="zh-CN">中文</a>
-      </nav>
+      <section id="install" class="section">
+        <h2>Install</h2>
+        <p class="req">Requires macOS 13 or later.</p>
+        <ol class="steps">
+          <li>
+            <h3>Install the app (either way)</h3>
+            <dl class="ways">
+              <dt>Homebrew</dt>
+              <dd><div class="install"><code>brew install --cask zhiyozhao/tap/bongocat-menubar</code><button class="copy" type="button" data-copy="brew install --cask zhiyozhao/tap/bongocat-menubar" data-done="Copied" aria-label="Copy install command">Copy</button></div></dd>
+              <dt>Manually</dt>
+              <dd>Download the <a href="https://github.com/zhiyozhao/bongocat-menubar/releases/latest">DMG</a> and drag the app into Applications. If the first launch says the developer cannot be verified, go to System Settings → Privacy &amp; Security and click “Open Anyway” at the bottom.</dd>
+            </dl>
+          </li>
+          <li>
+            <h3>Grant Accessibility permission</h3>
+            <p>Open the app, click “Open Settings” in the prompt, then “Open System Settings”, and turn on BongoCat Menubar.</p>
+          </li>
+        </ol>
+      </section>
+
+      <section id="faq" class="section">
+        <h2>FAQ</h2>
+        <details><summary>The cat doesn’t move.</summary><p>Open the cat’s menu. If it shows an “Accessibility” item, permission isn’t granted yet: click it and turn the switch on. If permission is granted, turn the switch off and on again in Settings. The cat stays still while you type a password; that’s normal.</p></details>
+      <details><summary>I can’t find the cat in the menu bar.</summary><p>When the menu bar is full, the notch hides the cat. Quit a few menu bar apps and it will show up.</p></details>
+      <details><summary>Does it record what I type?</summary><p>No. It has no network access and saves no keystrokes.</p></details>
+      <details><summary>How do I upgrade?</summary><p><code>brew upgrade --cask bongocat-menubar</code>, then open the app again. No need to grant permission again.</p></details>
+      <details><summary>How do I uninstall?</summary><p><code>brew uninstall --cask bongocat-menubar</code>, or drag the app to the Trash.</p></details>
+      </section>
     </div>
-  </footer>
+  </main>
   <script src="../demo.js" defer></script>
 </body>
 </html>

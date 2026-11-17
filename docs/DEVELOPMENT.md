@@ -76,9 +76,9 @@ app 壳在 `Sources/BongoCatMenubar/AppDelegate.swift`：
 `site/` 是 GitHub Pages 上的静态单页（https://zhiyozhao.github.io/bongocat-menubar/），无构建步骤，无统计和第三方脚本。`.github/workflows/pages.yml` 只在 master 上 `site/**` 有改动时（或手动触发）部署。
 
 - `index.html` 中文、`en/index.html` 英文，内容要同步；共用 `style.css` 和 `demo.js`。
-- `demo.js` 是首屏的可交互演示：键盘事件按 `event.code`（物理键位）分左右，规则与 `KeyMap`、`KeystrokeAnimator` 一致；没人操作时自动打 “bongo cat”，`prefers-reduced-motion` 时不自动播放。改了 app 的左右手划分或模式规则，这里要同步。
-- `assets/*.svg` 是 `Resources/Icons/` 的拷贝，用 CSS mask 着色以适配深浅色；换图标时一起更新。`icon-*.png` 由 `AppIcon.icns` 用 `sips` 导出。`og-{zh,en}.png` 是 1200×630 的分享预览图，取自页面首屏。
-- 设计约定：白纸黑线（和菜单栏图标一样的单色线稿），唯一强调色是荧光笔黄 `#FFD84A`，用于按下的键、标题划线和步骤数字；系统字体；页头做成 macOS 菜单栏，右侧放 1 倍大小的真实小猫，和首屏放大版同步动。
+- `demo.js` 是首屏的可交互演示（只演示默认的跟随模式）：键盘事件按 `event.code`（物理键位）分左右，规则与 `KeyMap`、`KeystrokeAnimator` 一致；没人操作时自动打 “bongo cat”，`prefers-reduced-motion` 时不自动播放。改了 app 的左右手划分，这里要同步。
+- `assets/*.svg` 是 `Resources/Icons/` 的拷贝，用 CSS mask 着色以适配深浅色；换图标时一起更新。`icon-*.png` 由 `AppIcon.icns` 用 `sips` 导出（README 用的 `docs/assets/icon.png` 也是）。`og-{zh,en}.png` 是 1200×630 的分享预览图。
+- 页面结构：首屏正好一屏高，只有图标和名字、一句介绍、演示；往下是安装（两步）和常见问题（折叠）。右上角只有 GitHub 和语言切换两个图标，没有导航和页脚。白纸黑线，唯一强调色是荧光笔黄 `#FFD84A`；系统字体。
 - 本地预览：`python3 -m http.server 4180 --directory site`，打开 http://127.0.0.1:4180/ 。
 
 ## 更新记录的写法
