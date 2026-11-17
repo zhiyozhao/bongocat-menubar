@@ -22,17 +22,18 @@
   <link rel="apple-touch-icon" href="assets/icon-180.png">
   <link rel="stylesheet" href="style.css">
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "BongoCat Menubar", "applicationCategory": "UtilitiesApplication", "operatingSystem": "macOS 13 或更新", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "downloadUrl": "https://github.com/zhiyozhao/bongocat-menubar/releases/latest", "url": "https://zhiyozhao.github.io/bongocat-menubar/", "inLanguage": "zh-CN"}</script>
-  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "小猫不动？", "acceptedAnswer": {"@type": "Answer", "text": "在密码框里打字时不动是正常的，macOS 不会把这些按键告诉任何 app。数字小键盘、Caps Lock 和 fn 本来就不会让它动。其他情况，到“系统设置 → 隐私与安全性 → 辅助功能”里把 BongoCat Menubar 的开关关掉再打开。"}}, {"@type": "Question", "name": "菜单栏里找不到小猫？", "acceptedAnswer": {"@type": "Answer", "text": "带刘海的 MacBook 上，菜单栏图标太多时，放不下的会被藏到刘海后面。退出几个菜单栏 app 就能看到它。"}}, {"@type": "Question", "name": "怎么升级？", "acceptedAnswer": {"@type": "Answer", "text": "brew upgrade --cask bongocat-menubar，或者下载新的 DMG 覆盖。升级后不用重新授权。"}}, {"@type": "Question", "name": "怎么卸载？", "acceptedAnswer": {"@type": "Answer", "text": "开过“开机启动”的话，先在小猫的菜单里关掉。然后 brew uninstall --cask bongocat-menubar，或者把 app 拖到废纸篓。"}}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "小猫不动？", "acceptedAnswer": {"@type": "Answer", "text": "在密码框里打字时不动是正常的，macOS 不会把这些按键告诉任何 app。数字小键盘、Caps Lock、fn、Home、End、Page Up、Page Down、向前删除和 F13 以上的键不会触发拍爪。点开小猫的菜单，如果有“辅助功能”这一项，说明还没授权，点它去打开开关；已经授权还不动，就到“系统设置 → 隐私与安全性 → 辅助功能”里把开关关掉再打开。"}}, {"@type": "Question", "name": "菜单栏里找不到小猫？", "acceptedAnswer": {"@type": "Answer", "text": "带刘海的 MacBook 上，菜单栏图标太多时，放不下的会被藏到刘海后面。退出几个菜单栏 app 就能看到它。"}}, {"@type": "Question", "name": "怎么升级？", "acceptedAnswer": {"@type": "Answer", "text": "brew upgrade --cask bongocat-menubar。升级时小猫会被退出，装好后从“应用程序”里再打开它。用 DMG 的话，先在小猫的菜单里选“退出”，再用新版覆盖。升级后不用重新授权。"}}, {"@type": "Question", "name": "怎么卸载？", "acceptedAnswer": {"@type": "Answer", "text": "开过“开机启动”的话，先在小猫的菜单里关掉。然后 brew uninstall --cask bongocat-menubar，或者把 app 拖到废纸篓。"}}]}</script>
 </head>
 <body>
   <a class="skip-link" href="#main">跳到正文</a>
   <header class="menubar">
     <div class="wrap">
       <a class="app" href="./"><img src="assets/icon-64.png" alt="" width="20" height="20">BongoCat Menubar</a>
-      <nav aria-label="页面导航"><a href="#install">安装</a><a href="#diff">有什么不同</a><a href="#faq">常见问题</a><a href="https://github.com/zhiyozhao/bongocat-menubar">GitHub</a></nav>
+      <nav aria-label="页面导航"><a href="#diff">有什么不同</a><a href="#faq">常见问题</a><a href="https://github.com/zhiyozhao/bongocat-menubar">GitHub</a></nav>
       <div class="tray">
         <span class="cat" data-frame="idle" aria-hidden="true"><i class="idle"></i><i class="a"></i><i class="b"></i><i class="both"></i></span>
         <span class="clock" aria-hidden="true">12:14</span>
+        <a class="install-btn" href="#install">安装</a>
         <a class="lang" href="en/" hreflang="en" lang="en">English</a>
       </div>
     </div>
@@ -75,7 +76,7 @@
           <div class="install"><code>brew install --cask zhiyozhao/tap/bongocat-menubar</code><button class="copy" type="button" data-copy="brew install --cask zhiyozhao/tap/bongocat-menubar" data-done="已复制" aria-label="复制安装命令">复制</button></div>
           <p class="muted">也可以<a href="https://github.com/zhiyozhao/bongocat-menubar/releases/latest">下载 DMG</a>，把 app 拖进“应用程序”。需要 macOS 13 或更新，Apple 芯片和 Intel 芯片都支持。</p></li>
         <li><h3>第一次打开（只有 DMG 安装会遇到）</h3><p class="muted">macOS 会提示“无法验证开发者”，因为 app 没有经过 Apple 公证。到“系统设置 → 隐私与安全性”，在页面底部点“仍要打开”。</p></li>
-        <li><h3>授权“辅助功能”</h3><p class="muted">弹窗里点“打开设置”，在列表里打开 BongoCat Menubar 的开关，小猫就开始动了，不用重启 app。</p>
+        <li><h3>授权“辅助功能”</h3><p class="muted">第一次打开会弹窗：点“打开设置”，系统接着再弹一个窗口，点“打开系统设置”，然后在“辅助功能”列表里打开 BongoCat Menubar 的开关。两秒内小猫就开始动，不用重启 app。点了“稍后”的话，之后点菜单栏里的小猫，选“辅助功能”。</p>
           <p class="why">macOS 只让拿到这项权限的 app 知道你按了哪个键。BongoCat Menubar 只用它看按键，不读你打出的文字，也不会拦截或替你按键。</p></li>
       </ol>
     </section>
@@ -84,18 +85,18 @@
       <h2>和别的 <span class="nw">Bongo Cat</span> 有什么不同</h2>
       <div class="two">
         <div><h3>只待在菜单栏</h3><p class="muted">不开窗口，不进 Dock，不挡屏幕。</p></div>
-        <div><h3>分左右手</h3><p class="muted">左手的键拍左爪，右手的键拍右爪，两边一起按就双爪齐拍。不想分左右，点小猫换成普通模式，每按一下左右爪轮流拍。</p></div>
+        <div><h3>分左右手</h3><p class="muted">左手的键拍左爪，右手的键拍右爪，两边一起按就双爪齐拍。不想分左右，点菜单栏里的小猫，在菜单里选“普通模式”，每按一下左右爪轮流拍。</p></div>
         <div><h3>不联网</h3><p class="muted">不记录按键，不读你打的字。</p></div>
         <div><h3>免费开源</h3><p class="muted">MIT 许可证，没有广告、账号和内购。</p></div>
       </div>
-      <p class="note">刻意不做：桌面宠物、积分、帽子、皮肤。它只是一只陪你打字的猫。</p>
+      <p class="note">刻意不做：桌面宠物、积分、帽子、皮肤。</p>
     </section>
 
     <section id="faq" class="section">
       <h2>常见问题</h2>
-      <details><summary>小猫不动？</summary><p>在密码框里打字时不动是正常的，macOS 不会把这些按键告诉任何 app。数字小键盘、Caps Lock 和 fn 本来就不会让它动。其他情况，到“系统设置 → 隐私与安全性 → 辅助功能”里把 BongoCat Menubar 的开关关掉再打开。</p></details>
+      <details><summary>小猫不动？</summary><p>在密码框里打字时不动是正常的，macOS 不会把这些按键告诉任何 app。数字小键盘、Caps Lock、fn、Home、End、Page Up、Page Down、向前删除和 F13 以上的键不会触发拍爪。点开小猫的菜单，如果有“辅助功能”这一项，说明还没授权，点它去打开开关；已经授权还不动，就到“系统设置 → 隐私与安全性 → 辅助功能”里把开关关掉再打开。</p></details>
       <details><summary>菜单栏里找不到小猫？</summary><p>带刘海的 MacBook 上，菜单栏图标太多时，放不下的会被藏到刘海后面。退出几个菜单栏 app 就能看到它。</p></details>
-      <details><summary>怎么升级？</summary><p><code>brew upgrade --cask bongocat-menubar</code>，或者下载新的 DMG 覆盖。升级后不用重新授权。</p></details>
+      <details><summary>怎么升级？</summary><p><code>brew upgrade --cask bongocat-menubar</code>。升级时小猫会被退出，装好后从“应用程序”里再打开它。用 DMG 的话，先在小猫的菜单里选“退出”，再用新版覆盖。升级后不用重新授权。</p></details>
       <details><summary>怎么卸载？</summary><p>开过“开机启动”的话，先在小猫的菜单里关掉。然后 <code>brew uninstall --cask bongocat-menubar</code>，或者把 app 拖到废纸篓。</p></details>
     </section>
   </main>

@@ -68,7 +68,7 @@ app 壳在 `Sources/BongoCatMenubar/AppDelegate.swift`：
 
 `Scripts/render-demo.swift`（`make demo`）用 `Resources/Icons/` 里的真实图标在模拟菜单栏上渲染 `docs/assets/demo-{light,dark}.gif`，不截屏：
 
-- 内容是跟随模式下打出 “bongo cat”。按键时间写在脚本的 `strokes` 里，小猫的帧按 app 同样的规则（某侧有键按住就拍下该侧爪子）从按键时间推出来，所以键盘高亮和爪子始终同步。菜单栏放大 3.5 倍。
+- 内容是跟随模式下打出 “bongo cat”。按键时间写在脚本的 `strokes` 里，小猫的帧按 app 同样的规则（某侧有键按住就拍下该侧爪子）从按键时间推出来，所以键盘高亮和爪子始终同步。菜单栏放大 2 倍，右侧再放一个约 7 倍的小猫特写，用虚线连到菜单栏里的小猫。节奏放慢到约每秒 2 个键，g 和 o 重叠 0.45 秒，让双爪齐拍看得清；官网首屏自动演示用同样的时间（`demo.js` 的 `STROKES`），改一处要同步另一处。
 - 图里只出现按键字母和 “bongo cat”，中英文 README 共用。
 
 ## 官网
@@ -83,7 +83,7 @@ app 壳在 `Sources/BongoCatMenubar/AppDelegate.swift`：
 
 ## 更新记录的写法
 
-`CHANGELOG.md` 面向用户，只写用户能感知的变化；纯工程改动在对应版本里合并成一句“内部改进”。各版本的工程改动：
+`CHANGELOG.md` 面向用户，只写用户能感知的变化；纯工程改动不写进去（版本里没有用户可见变化时只写“功能无变化”）。各版本的工程改动：
 
 - 1.0.3：单元测试（Swift Testing），覆盖左右手键位、两种模式的帧切换、图标加载顺序；`make check / run / package` 统一入口；push / PR 上运行的 CI；README 演示动图。
 - 1.0.2：构建系统从 swiftc + Makefile 迁移到 SwiftPM，仍输出 universal 版本。

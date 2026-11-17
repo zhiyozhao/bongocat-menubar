@@ -162,3 +162,11 @@ h1, h2, h3 { text-wrap: balance; }
   .steps li::before { font-size: 32px; }
 }
 .nw { white-space: nowrap; }
+.install-btn { padding: 3px 12px; border-radius: 7px; background: var(--ink); color: var(--paper); font-weight: 650; text-decoration: none; }
+.install-btn:hover { background: var(--marker); color: var(--on-marker); text-decoration: none; }
+@media (max-width: 640px) {
+  .menubar .clock { display: none; }
+  .hero { padding: 28px 0 40px; row-gap: 24px; }
+  .hero .actions { margin-top: 22px; }
+  #install { padding-top: 40px; }
+}

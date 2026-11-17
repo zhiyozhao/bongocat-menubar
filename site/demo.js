@@ -74,21 +74,22 @@
     }));
 
   // Autoplay: types "bongo cat" until the visitor tries it themselves.
-  const STROKES = [["KeyB", 0.9, 1.0], ["KeyO", 1.08, 1.17], ["KeyN", 1.24, 1.33], ["KeyG", 1.4, 1.52], ["KeyO", 1.46, 1.58],
-    ["Space", 1.72, 1.81], ["KeyC", 1.92, 2.02], ["KeyA", 2.08, 2.17], ["KeyT", 2.24, 2.36]];
+  // Same timing as the README GIF: slow enough to follow each paw; "g" and "o"
+  // overlap so both paws stay down together for a moment.
+  const STROKES = [["KeyB", 0.8, 1.15], ["KeyO", 1.35, 1.65], ["KeyN", 1.85, 2.1], ["KeyG", 2.3, 2.95], ["KeyO", 2.5, 2.95],
+    ["Space", 3.15, 3.35], ["KeyC", 3.5, 3.75], ["KeyA", 3.9, 4.15], ["KeyT", 4.3, 4.6]];
   let timers = [], loop = 0, resume = 0, playing = false;
   function play() {
     playing = true;
     const run = () => {
       timers = [];
-      // "g" and "o" overlap briefly, so both paws come down for a moment.
       STROKES.forEach(([code, down, up]) => {
         timers.push(setTimeout(() => keyDown(code), down * 1000));
         timers.push(setTimeout(() => keyUp(code), up * 1000));
       });
     };
     run();
-    loop = setInterval(run, 4000);
+    loop = setInterval(run, 6200);
   }
   function stop() {
     if (playing) {

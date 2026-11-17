@@ -16,7 +16,7 @@ make demo      # 重新生成 docs/assets/ 的演示 GIF
 
 ## 完成定义
 
-`make check` 全绿；改了逻辑就加或改 `Tests/BongoCatCoreTests/` 的测试；用户可见变化用用户语言写进 `CHANGELOG.md` 的 Unreleased（纯工程改动只写“内部改进”，细节记到 `docs/DEVELOPMENT.md`）；已提交（Conventional Commits）。
+`make check` 全绿；改了逻辑就加或改 `Tests/BongoCatCoreTests/` 的测试；用户可见变化用用户语言写进 `CHANGELOG.md` 的 Unreleased（纯工程改动不写，细节记到 `docs/DEVELOPMENT.md`）；已提交（Conventional Commits）。
 
 ## 结构约定
 

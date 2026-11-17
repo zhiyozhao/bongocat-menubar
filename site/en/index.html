@@ -22,17 +22,18 @@
   <link rel="apple-touch-icon" href="../assets/icon-180.png">
   <link rel="stylesheet" href="../style.css">
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "BongoCat Menubar", "applicationCategory": "UtilitiesApplication", "operatingSystem": "macOS 13 or later", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "downloadUrl": "https://github.com/zhiyozhao/bongocat-menubar/releases/latest", "url": "https://zhiyozhao.github.io/bongocat-menubar/en/", "inLanguage": "en"}</script>
-  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "The cat doesn’t move.", "acceptedAnswer": {"@type": "Answer", "text": "It is normal for the cat to stay still while you type a password: macOS does not share those key presses with any app. The numeric keypad, Caps Lock and fn never move it. Otherwise, go to System Settings → Privacy & Security → Accessibility and turn BongoCat Menubar off and on again."}}, {"@type": "Question", "name": "I can’t find the cat in the menu bar.", "acceptedAnswer": {"@type": "Answer", "text": "On MacBooks with a notch, menu bar icons that don’t fit are hidden behind the notch. Quit a few menu bar apps and it will show up."}}, {"@type": "Question", "name": "How do I upgrade?", "acceptedAnswer": {"@type": "Answer", "text": "brew upgrade --cask bongocat-menubar, or download the new DMG and replace the app. You don’t need to grant permission again."}}, {"@type": "Question", "name": "How do I uninstall?", "acceptedAnswer": {"@type": "Answer", "text": "If you turned on Launch at Login, turn it off in the cat’s menu first. Then run brew uninstall --cask bongocat-menubar, or drag the app to the Trash."}}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "The cat doesn’t move.", "acceptedAnswer": {"@type": "Answer", "text": "It is normal for the cat to stay still while you type a password: macOS does not share those key presses with any app. The numeric keypad, Caps Lock, fn, Home, End, Page Up, Page Down, Forward Delete and F13 and above do not trigger a tap. If the cat’s menu shows an “Accessibility” item, permission is not granted yet: click it and turn the switch on. If permission is granted and the cat still doesn’t move, go to System Settings → Privacy & Security → Accessibility and turn BongoCat Menubar off and on again."}}, {"@type": "Question", "name": "I can’t find the cat in the menu bar.", "acceptedAnswer": {"@type": "Answer", "text": "On MacBooks with a notch, menu bar icons that don’t fit are hidden behind the notch. Quit a few menu bar apps and it will show up."}}, {"@type": "Question", "name": "How do I upgrade?", "acceptedAnswer": {"@type": "Answer", "text": "brew upgrade --cask bongocat-menubar. The upgrade quits the cat; open it again from Applications afterwards. With the DMG, choose “Quit” in the cat’s menu first, then replace the app with the new one. You don’t need to grant permission again."}}, {"@type": "Question", "name": "How do I uninstall?", "acceptedAnswer": {"@type": "Answer", "text": "If you turned on Launch at Login, turn it off in the cat’s menu first. Then run brew uninstall --cask bongocat-menubar, or drag the app to the Trash."}}]}</script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="menubar">
     <div class="wrap">
       <a class="app" href="./"><img src="../assets/icon-64.png" alt="" width="20" height="20">BongoCat Menubar</a>
-      <nav aria-label="Page"><a href="#install">Install</a><a href="#diff">What’s different</a><a href="#faq">FAQ</a><a href="https://github.com/zhiyozhao/bongocat-menubar">GitHub</a></nav>
+      <nav aria-label="Page"><a href="#diff">What’s different</a><a href="#faq">FAQ</a><a href="https://github.com/zhiyozhao/bongocat-menubar">GitHub</a></nav>
       <div class="tray">
         <span class="cat" data-frame="idle" aria-hidden="true"><i class="idle"></i><i class="a"></i><i class="b"></i><i class="both"></i></span>
         <span class="clock" aria-hidden="true">12:14</span>
+        <a class="install-btn" href="#install">Install</a>
         <a class="lang" href="../" hreflang="zh-CN" lang="zh-CN">中文</a>
       </div>
     </div>
@@ -75,7 +76,7 @@
           <div class="install"><code>brew install --cask zhiyozhao/tap/bongocat-menubar</code><button class="copy" type="button" data-copy="brew install --cask zhiyozhao/tap/bongocat-menubar" data-done="Copied" aria-label="Copy install command">Copy</button></div>
           <p class="muted">Or <a href="https://github.com/zhiyozhao/bongocat-menubar/releases/latest">download the DMG</a> and drag the app into Applications. Requires macOS 13 or later, on Apple silicon or Intel.</p></li>
         <li><h3>First launch (DMG only)</h3><p class="muted">macOS says it cannot verify the developer, because the app is not notarized by Apple. Go to System Settings → Privacy &amp; Security and click “Open Anyway” at the bottom.</p></li>
-        <li><h3>Grant Accessibility permission</h3><p class="muted">Click “Open Settings” in the prompt and turn on BongoCat Menubar in the list. The cat starts moving right away, no restart needed.</p>
+        <li><h3>Grant Accessibility permission</h3><p class="muted">On first launch a prompt appears. Click “Open Settings”, then “Open System Settings” in the system dialog that follows, and turn on BongoCat Menubar in the Accessibility list. The cat starts moving within two seconds, no restart needed. If you clicked “Later”, click the cat in the menu bar and choose “Accessibility”.</p>
           <p class="why">macOS only tells apps with this permission which keys you press. BongoCat Menubar uses it only to see key presses. It never reads the text you type, and never blocks or types keys for you.</p></li>
       </ol>
     </section>
@@ -84,18 +85,18 @@
       <h2>How it differs from other <span class="nw">Bongo Cats</span></h2>
       <div class="two">
         <div><h3>Menu bar only</h3><p class="muted">No window, nothing in the Dock, nothing covering your screen.</p></div>
-        <div><h3>Knows your hands</h3><p class="muted">Left-hand keys tap the left paw, right-hand keys the right paw, both at once tap both. If you’d rather not split hands, click the cat and switch to Normal Mode, where every key press alternates the paws.</p></div>
+        <div><h3>Knows your hands</h3><p class="muted">Left-hand keys tap the left paw, right-hand keys the right paw, both at once tap both. If you’d rather not split hands, click the cat in the menu bar and choose “Normal Mode”, where every key press alternates the paws.</p></div>
         <div><h3>No network</h3><p class="muted">No keystroke logging, and it never reads what you type.</p></div>
         <div><h3>Free and open source</h3><p class="muted">MIT license. No ads, no account, no in-app purchases.</p></div>
       </div>
-      <p class="note">Deliberately left out: desktop pets, points, hats, skins. It is just a cat that keeps you company while you type.</p>
+      <p class="note">Deliberately left out: desktop pets, points, hats, skins.</p>
     </section>
 
     <section id="faq" class="section">
       <h2>FAQ</h2>
-      <details><summary>The cat doesn’t move.</summary><p>It is normal for the cat to stay still while you type a password: macOS does not share those key presses with any app. The numeric keypad, Caps Lock and fn never move it. Otherwise, go to System Settings → Privacy &amp; Security → Accessibility and turn BongoCat Menubar off and on again.</p></details>
+      <details><summary>The cat doesn’t move.</summary><p>It is normal for the cat to stay still while you type a password: macOS does not share those key presses with any app. The numeric keypad, Caps Lock, fn, Home, End, Page Up, Page Down, Forward Delete and F13 and above do not trigger a tap. If the cat’s menu shows an “Accessibility” item, permission is not granted yet: click it and turn the switch on. If permission is granted and the cat still doesn’t move, go to System Settings → Privacy &amp; Security → Accessibility and turn BongoCat Menubar off and on again.</p></details>
       <details><summary>I can’t find the cat in the menu bar.</summary><p>On MacBooks with a notch, menu bar icons that don’t fit are hidden behind the notch. Quit a few menu bar apps and it will show up.</p></details>
-      <details><summary>How do I upgrade?</summary><p><code>brew upgrade --cask bongocat-menubar</code>, or download the new DMG and replace the app. You don’t need to grant permission again.</p></details>
+      <details><summary>How do I upgrade?</summary><p><code>brew upgrade --cask bongocat-menubar</code>. The upgrade quits the cat; open it again from Applications afterwards. With the DMG, choose “Quit” in the cat’s menu first, then replace the app with the new one. You don’t need to grant permission again.</p></details>
       <details><summary>How do I uninstall?</summary><p>If you turned on Launch at Login, turn it off in the cat’s menu first. Then run <code>brew uninstall --cask bongocat-menubar</code>, or drag the app to the Trash.</p></details>
     </section>
   </main>
