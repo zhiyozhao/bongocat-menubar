@@ -78,7 +78,7 @@ README 的 `docs/assets/demo-{zh,en}-{light,dark}.gif` 直接录自官网首屏�
 - `index.html` 中文、`en/index.html` 英文，内容要同步；共用 `style.css` 和 `demo.js`。
 - `demo.js` 是首屏的可交互演示，可以在跟随模式和普通模式之间切换（与 app 菜单里的两个模式一致）：键盘事件按 `event.code`（物理键位）分左右，规则与 `KeyMap`、`KeystrokeAnimator` 一致；没人操作时自动打 “bongo cat”，`prefers-reduced-motion` 时不自动播放。改了 app 的左右手划分或模式规则，这里要同步。
 - `assets/*.svg` 是 `Resources/Icons/` 的拷贝，用 CSS mask 着色以适配深浅色；换图标时一起更新。`icon-*.png` 由 `AppIcon.icns` 用 `sips` 导出（README 用的 `docs/assets/icon.png` 也是）。`og-{zh,en}.png` 是 1200×630 的分享预览图。
-- 页面结构：首屏正好一屏高，只有图标和名字、一句介绍、演示；往下是安装（两步）和常见问题（折叠）。右上角只有 GitHub 图标和语言切换（中文页显示 EN，英文页显示 中），没有导航和页脚。演示区的菜单栏画了 WiFi、电池、小猫和时钟，和 README 的 GIF 一致。白纸黑线，唯一强调色是荧光笔黄 `#FFD84A`；系统字体。
+- 页面结构：首屏正好一屏高，只有图标和名字、一句介绍、演示；往下是安装（两步）和常见问题（折叠）。右上角只有 GitHub 图标和语言切换（中文页显示 EN，英文页显示 中），没有导航和页脚。演示区的菜单栏按真实比例画了小猫、WiFi、电池和时钟，靠右排在一起，和 README 的 GIF 一致。白纸黑线，唯一强调色是荧光笔黄 `#FFD84A`；系统字体。
 - 本地预览：`python3 -m http.server 4180 --directory site`，打开 http://127.0.0.1:4180/ 。
 
 ## 更新记录的写法

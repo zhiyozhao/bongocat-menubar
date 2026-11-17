@@ -68,9 +68,10 @@ h1 { margin: 0; font-size: clamp(28px, 4.2vw, 44px); line-height: 1.15; letter-s
 .demo { width: min(100%, 800px); margin: 0; padding: 0 0 18px; border: 1.5px solid var(--ink); border-radius: 16px; overflow: hidden; background: var(--paper); }
 /* Menu bar, magnified. Everything is sized in --u (one menu bar point) with the
    real macOS proportions: bar 24pt, app icon 16pt tall, Wi-Fi about 16 x 12pt,
-   battery about 24 x 11pt, clock in 13.5pt text, about 14pt between items. */
+   battery about 24 x 11pt, clock in 13.5pt text. Status items sit together on the
+   right, about 9pt apart; the left of the bar stays empty. */
 .demo-bar { --u: clamp(1.8px, min(.4vw, .5vh, (100vw - 40px) / 176), 4.25px);
-  display: flex; align-items: center; justify-content: flex-end; gap: calc(14 * var(--u)); height: calc(24 * var(--u));
+  display: flex; align-items: center; justify-content: flex-end; gap: calc(9 * var(--u)); height: calc(24 * var(--u));
   padding: 0 calc(16 * var(--u)); background: var(--bar); border-bottom: 1px solid var(--rule); }
 .demo-bar .cat { height: calc(16 * var(--u)); }
 .demo-bar .sym { flex: none; color: var(--ink); }
@@ -139,3 +140,4 @@ details p { margin: -4px 0 18px; color: var(--pencil); }
   .demo-foot { flex-direction: column; }
   .keyboard { --k: min(30px, calc((100vw - 32px - 24px - 9 * 4px - 14px) / 10.8)); --g: 4px; }
 }
+.nw { white-space: nowrap; }
