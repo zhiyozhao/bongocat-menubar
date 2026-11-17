@@ -66,19 +66,19 @@ app 壳在 `Sources/BongoCatMenubar/AppDelegate.swift`：
 
 ## 演示图
 
-`Scripts/render-demo.swift`（`make demo`）用 `Resources/Icons/` 里的真实图标在模拟菜单栏上渲染 `docs/assets/demo-{light,dark}.gif`，不截屏：
+README 的 `docs/assets/demo-{zh,en}-{light,dark}.gif` 直接录自官网首屏的演示（`site/`），和网页一模一样：`make demo` 运行 `Scripts/record-demo.cjs`，用 Playwright 按 `STROKES` 逐个发送按键并截下演示区（2 倍，720pt 宽），再用 ffmpeg 合成 GIF（64 色、不抖动，每个约 65 KB）。录制时去掉“敲几下键盘试试”这行提示，时钟固定为 9:41。
 
-- 内容是跟随模式下打出 “bongo cat”。按键时间写在脚本的 `strokes` 里，小猫的帧按 app 同样的规则（某侧有键按住就拍下该侧爪子）从按键时间推出来，所以键盘高亮和爪子始终同步。菜单栏放大 2 倍，右侧再放一个约 7 倍的小猫特写，用虚线连到菜单栏里的小猫。节奏放慢到约每秒 2 个键，g 和 o 重叠 0.45 秒，让双爪齐拍看得清；官网首屏自动演示用同样的时间（`demo.js` 的 `STROKES`），改一处要同步另一处。
-- 图里只出现按键字母和 “bongo cat”，中英文 README 共用。
+- 需要 Playwright（带 Chrome）和 ffmpeg。Playwright 模块不在默认路径时，用 `PLAYWRIGHT=/path/to/node_modules/playwright make demo` 指定。
+- `STROKES` 和 `site/demo.js` 里的自动演示是同一组按键时间，改一处要同步另一处。改了官网演示的样子，重新 `make demo`。
 
 ## 官网
 
 `site/` 是 GitHub Pages 上的静态单页（https://zhiyozhao.github.io/bongocat-menubar/），无构建步骤，无统计和第三方脚本。`.github/workflows/pages.yml` 只在 master 上 `site/**` 有改动时（或手动触发）部署。
 
 - `index.html` 中文、`en/index.html` 英文，内容要同步；共用 `style.css` 和 `demo.js`。
-- `demo.js` 是首屏的可交互演示（只演示默认的跟随模式）：键盘事件按 `event.code`（物理键位）分左右，规则与 `KeyMap`、`KeystrokeAnimator` 一致；没人操作时自动打 “bongo cat”，`prefers-reduced-motion` 时不自动播放。改了 app 的左右手划分，这里要同步。
+- `demo.js` 是首屏的可交互演示，可以在跟随模式和普通模式之间切换（与 app 菜单里的两个模式一致）：键盘事件按 `event.code`（物理键位）分左右，规则与 `KeyMap`、`KeystrokeAnimator` 一致；没人操作时自动打 “bongo cat”，`prefers-reduced-motion` 时不自动播放。改了 app 的左右手划分或模式规则，这里要同步。
 - `assets/*.svg` 是 `Resources/Icons/` 的拷贝，用 CSS mask 着色以适配深浅色；换图标时一起更新。`icon-*.png` 由 `AppIcon.icns` 用 `sips` 导出（README 用的 `docs/assets/icon.png` 也是）。`og-{zh,en}.png` 是 1200×630 的分享预览图。
-- 页面结构：首屏正好一屏高，只有图标和名字、一句介绍、演示；往下是安装（两步）和常见问题（折叠）。右上角只有 GitHub 和语言切换两个图标，没有导航和页脚。白纸黑线，唯一强调色是荧光笔黄 `#FFD84A`；系统字体。
+- 页面结构：首屏正好一屏高，只有图标和名字、一句介绍、演示；往下是安装（两步）和常见问题（折叠）。右上角只有 GitHub 图标和语言切换（中文页显示 EN，英文页显示 中），没有导航和页脚。演示区的菜单栏画了 WiFi、电池、小猫和时钟，和 README 的 GIF 一致。白纸黑线，唯一强调色是荧光笔黄 `#FFD84A`；系统字体。
 - 本地预览：`python3 -m http.server 4180 --directory site`，打开 http://127.0.0.1:4180/ 。
 
 ## 更新记录的写法

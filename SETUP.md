@@ -8,7 +8,7 @@
 | Xcode | 16+（`swift test` 用 Swift Testing） | Xcode 26.3，Swift 6.2.4 |
 | 签名证书 | 可选：钥匙串里名为 `DEV X` 的代码签名证书 | 已安装 |
 
-没有任何第三方依赖（没有 `Package.resolved`），不需要 brew、npm 或 Python。
+app 没有任何第三方依赖（没有 `Package.resolved`），构建和测试不需要 brew、npm 或 Python。只有 `make demo`（录 README 的 GIF）需要 Playwright（带 Chrome）和 ffmpeg，见 `docs/DEVELOPMENT.md`。
 
 签名证书由 `~/Codes/dev-x-signing` 统一管理，本项目不保存证书或密码。没有证书时构建自动回退 ad-hoc 签名，功能一样，只是每次重建后要重新授予辅助功能权限。
 

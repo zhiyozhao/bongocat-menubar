@@ -1,5 +1,6 @@
 // Demo for the BongoCat Menubar site. Same rules as the app:
-// Follow Mode (the app's default): a paw is down while any key on its side is held.
+// Follow Mode: a paw is down while any key on its side is held.
+// Normal Mode: every key press alternates the paws; idle after 0.5 s.
 // Runs only in this page. Nothing is stored or sent anywhere.
 (() => {
   const LEFT = new Set(("Escape F1 F2 F3 F4 F5 Backquote Digit1 Digit2 Digit3 Digit4 Digit5 Tab KeyQ KeyW KeyE KeyR KeyT " +
@@ -14,9 +15,10 @@
   const demo = document.querySelector(".demo");
   const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  let follow = true;
   const held = { left: new Set(), right: new Set() };
   const pressed = new Set();
-  let frame = "idle";
+  let toggle = false, idleTimer = 0, frame = "idle";
 
   const show = (f) => {
     if (f === frame) return;
@@ -34,23 +36,42 @@
     if (!h || pressed.has(code)) return;
     pressed.add(code);
     mark(code, true);
-    held[h].add(code);
-    followFrame();
+    if (follow) {
+      held[h].add(code);
+      followFrame();
+    } else {
+      toggle = !toggle;
+      show(toggle ? "a" : "b");
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => show("idle"), 500);
+    }
   }
   function keyUp(code) {
     const h = hand(code);
     if (!h) return;
     pressed.delete(code);
     mark(code, false);
-    held[h].delete(code);
-    followFrame();
+    if (follow) {
+      held[h].delete(code);
+      followFrame();
+    }
   }
   function releaseAll() {
     [...pressed].forEach(keyUp);
     held.left.clear();
     held.right.clear();
-    followFrame();
+    if (follow) followFrame();
   }
+
+  // Mode switch, like the app's menu. Switching puts the cat back to rest.
+  document.querySelectorAll('input[name="mode"]').forEach((input) =>
+    input.addEventListener("change", () => {
+      releaseAll();
+      follow = input.value === "follow";
+      clearTimeout(idleTimer);
+      toggle = false;
+      show("idle");
+    }));
 
   // Autoplay: types "bongo cat" until the visitor tries it themselves.
   // Same timing as the README GIF: slow enough to follow each paw; "g" and "o"

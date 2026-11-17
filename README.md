@@ -14,8 +14,8 @@
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/demo-dark.gif">
-    <img alt="打字 bongo cat 时，菜单栏里的小猫跟着拍爪子：左手的键拍左爪，右手的键拍右爪，两边同时按下双爪一起拍" src="docs/assets/demo-light.gif" width="720">
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/demo-zh-dark.gif">
+    <img alt="菜单栏里的小猫跟着按键拍爪子：左手的键拍左爪，右手的键拍右爪，两边同时按下双爪一起拍" src="docs/assets/demo-zh-light.gif" width="720">
   </picture>
 </p>
 
@@ -23,13 +23,14 @@
 
 ### 第 1 步：安装 app（二选一）
 
-- **Homebrew**
+**用 Homebrew**
 
-  ```bash
-  brew install --cask zhiyozhao/tap/bongocat-menubar
-  ```
+```bash
+brew install --cask zhiyozhao/tap/bongocat-menubar
+```
 
-- **手动安装**：到 [Releases](https://github.com/zhiyozhao/bongocat-menubar/releases/latest) 下载 DMG，把 app 拖进“应用程序”。第一次打开如果提示“无法验证开发者”，到“系统设置 → 隐私与安全性”，在页面底部点“仍要打开”。
+**手动安装**\
+到 [Releases](https://github.com/zhiyozhao/bongocat-menubar/releases/latest) 下载 DMG，把 app 拖进“应用程序”。第一次打开如果提示“无法验证开发者”，到“系统设置 → 隐私与安全性”，在页面底部点“仍要打开”。
 
 ### 第 2 步：授权辅助功能
 

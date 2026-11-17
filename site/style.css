@@ -40,8 +40,9 @@ p, dd { text-wrap: pretty; }
 
 /* Top right: GitHub and language, nothing else. */
 .top { position: absolute; top: 12px; right: 16px; z-index: 5; display: flex; gap: 4px; }
-.icon-link { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 10px; color: var(--pencil); }
+.icon-link { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 10px; color: var(--pencil); text-decoration: none; }
 .icon-link:hover { color: var(--ink); background: var(--rule); }
+.lang-text { font-size: 16px; font-weight: 700; line-height: 1; }
 
 /* The cat: four stacked masks, one visible. Color follows currentColor. */
 .cat { position: relative; display: inline-block; aspect-ratio: 89 / 51; color: var(--ink); }
@@ -67,6 +68,9 @@ h1 { margin: 0; font-size: clamp(28px, 4.2vw, 44px); line-height: 1.15; letter-s
 .demo { width: min(100%, 800px); margin: 0; padding: 0 0 18px; border: 1.5px solid var(--ink); border-radius: 16px; overflow: hidden; background: var(--paper); }
 .demo-bar { display: flex; align-items: center; justify-content: flex-end; gap: clamp(18px, 4vw, 30px); height: clamp(64px, min(10vw, 12vh), 104px); padding: 0 clamp(20px, 4vw, 30px); background: var(--bar); border-bottom: 1px solid var(--rule); }
 .demo-bar .cat { height: clamp(40px, min(6.5vw, 8vh), 68px); }
+.demo-bar .sym { flex: none; color: var(--ink); }
+.demo-bar .wifi { height: clamp(16px, min(2.6vw, 3.2vh), 27px); width: auto; }
+.demo-bar .batt { height: clamp(14px, min(2.2vw, 2.7vh), 23px); width: auto; }
 .demo-bar .clock { font-size: clamp(22px, min(3.4vw, 4vh), 36px); font-weight: 600; font-variant-numeric: tabular-nums; }
 .keyboard { --k: clamp(26px, min(3.6vw, 5.4vh), 46px); --g: clamp(4px, .6vw, 6px); display: grid; justify-content: center; gap: var(--g); margin: 24px auto 0; padding: 0 12px;
   user-select: none; -webkit-user-select: none; touch-action: manipulation; }
@@ -79,9 +83,16 @@ h1 { margin: 0; font-size: clamp(28px, 4.2vw, 44px); line-height: 1.15; letter-s
   background: var(--key); color: var(--pencil); font-size: calc(var(--k) * .4); cursor: pointer; }
 .key.space { width: calc(var(--k) * 5.6); }
 .key.down { background: var(--marker); border-color: var(--marker); color: var(--on-marker); transform: translateY(1px); }
-.hint { margin: 16px 0 0; color: var(--pencil); font-size: 14px; }
+.demo-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; margin: 20px clamp(16px, 4vw, 30px) 0; }
+.hint { margin: 0; color: var(--pencil); font-size: 14px; }
 .hint .touch { display: none; }
 @media (hover: none) { .hint .pointer { display: none; } .hint .touch { display: inline; } }
+.modes { display: inline-flex; margin: 0; padding: 3px; border: 1px solid var(--key-edge); border-radius: 9px; font-size: 14px; }
+.modes legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.modes label { position: relative; padding: 3px 12px; border-radius: 6px; cursor: pointer; white-space: nowrap; }
+.modes input { position: absolute; opacity: 0; }
+.modes label:has(input:checked) { background: var(--ink); color: var(--paper); }
+.modes label:has(input:focus-visible) { outline: 3px solid var(--marker); outline-offset: 2px; }
 
 /* Below the fold */
 .wrap { width: min(calc(100% - 48px), 720px); margin-inline: auto; }
@@ -122,5 +133,6 @@ details p { margin: -4px 0 18px; color: var(--pencil); }
   .steps > li { padding-left: 44px; }
   .install { align-items: flex-start; }
   .install code { white-space: normal; overflow-wrap: anywhere; font-size: 13px; line-height: 1.5; }
+  .demo-foot { flex-direction: column; }
   .keyboard { --k: min(30px, calc((100vw - 32px - 24px - 9 * 4px - 14px) / 10.8)); --g: 4px; }
 }

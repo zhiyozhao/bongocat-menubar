@@ -27,7 +27,7 @@
 <body>
   <header class="top">
     <a class="icon-link" href="https://github.com/zhiyozhao/bongocat-menubar" aria-label="GitHub" title="GitHub"><svg viewBox="0 0 16 16" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg></a>
-    <a class="icon-link" href="en/" hreflang="en" lang="en" aria-label="English" title="English"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/></svg></a>
+    <a class="icon-link" href="en/" hreflang="en" lang="en" aria-label="English" title="English"><span class="lang-text">EN</span></a>
   </header>
 
   <main>
@@ -36,6 +36,8 @@
       <p class="lede">Mac 菜单栏里的一只猫。你打字，它拍爪子：<br>左手拍左爪，右手拍右爪。</p>
       <figure class="demo" aria-label="演示：放大后的菜单栏右上角。敲键盘或点下面的键，小猫跟着拍爪子">
         <div class="demo-bar">
+          <svg class="sym wifi" viewBox="0 0 24 18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M2.2 6.6a14.2 14.2 0 0 1 19.6 0"/><path d="M5.6 10.1a9.3 9.3 0 0 1 12.8 0"/><path d="M9 13.5a4.5 4.5 0 0 1 6 0"/></g><circle cx="12" cy="16.4" r="1.5" fill="currentColor"/></svg>
+          <svg class="sym batt" viewBox="0 0 30 14" aria-hidden="true"><rect x="1" y="1" width="24.5" height="12" rx="3.6" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".5"/><rect x="3.3" y="3.3" width="15" height="7.4" rx="1.8" fill="currentColor"/><path d="M27.2 5.2v3.6a1.8 1.8 0 0 0 0-3.6Z" fill="currentColor" opacity=".5"/></svg>
           <span class="cat" data-frame="idle" aria-hidden="true"><i class="idle"></i><i class="a"></i><i class="b"></i><i class="both"></i></span>
           <span class="clock" aria-hidden="true">12:14</span>
         </div>
@@ -45,7 +47,14 @@
           <div class="row"><span class="key" data-code="KeyZ">Z</span><span class="key" data-code="KeyX">X</span><span class="key" data-code="KeyC">C</span><span class="key" data-code="KeyV">V</span><span class="key" data-code="KeyB">B</span><span class="split"></span><span class="key" data-code="KeyN">N</span><span class="key" data-code="KeyM">M</span><span class="key" data-code="Comma">,</span><span class="key" data-code="Period">.</span><span class="key" data-code="Slash">/</span></div>
           <div class="row"><span class="key space" data-code="Space"></span></div>
         </div>
-        <p class="hint"><span class="pointer">敲几下键盘试试，或者点上面的键。</span><span class="touch">点上面的键试试。</span></p>
+        <div class="demo-foot">
+          <p class="hint"><span class="pointer">敲几下键盘试试，或者点上面的键。</span><span class="touch">点上面的键试试。</span></p>
+          <fieldset class="modes">
+            <legend>模式</legend>
+            <label><input type="radio" name="mode" value="follow" checked>跟随模式</label>
+            <label><input type="radio" name="mode" value="normal">普通模式</label>
+          </fieldset>
+        </div>
       </figure>
       <a class="more" href="#install">安装 <span aria-hidden="true">↓</span></a>
     </section>
@@ -58,7 +67,7 @@
           <li>
             <h3>安装 app（二选一）</h3>
             <dl class="ways">
-              <dt>Homebrew</dt>
+              <dt>用 Homebrew</dt>
               <dd><div class="install"><code>brew install --cask zhiyozhao/tap/bongocat-menubar</code><button class="copy" type="button" data-copy="brew install --cask zhiyozhao/tap/bongocat-menubar" data-done="已复制" aria-label="复制安装命令">复制</button></div></dd>
               <dt>手动安装</dt>
               <dd>下载 <a href="https://github.com/zhiyozhao/bongocat-menubar/releases/latest">DMG</a>，把 app 拖进“应用程序”。第一次打开如果提示“无法验证开发者”，到“系统设置 → 隐私与安全性”，在页面底部点“仍要打开”。</dd>

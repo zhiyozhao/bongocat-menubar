@@ -31,9 +31,9 @@ package:
 icon:
 	swift Scripts/generate-icon.swift
 
-## demo: 重新生成 README 演示 GIF（docs/assets/）
+## demo: 从官网演示录制 README 的 GIF（docs/assets/demo-*.gif）；需要 Playwright（PLAYWRIGHT=模块路径）和 ffmpeg
 demo:
-	swift Scripts/render-demo.swift
+	node Scripts/record-demo.cjs
 
 clean:
 	swift package clean

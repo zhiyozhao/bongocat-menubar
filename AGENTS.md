@@ -9,7 +9,7 @@ make check     # plutil/bash 语法检查 + swift build + swift test（CI 跑的
 make run       # Scripts/build-app.sh 打包后前台运行，Ctrl-C 退出
 make package   # .build/release/BongoCat Menubar.app + BongoCat-Menubar-v<version>.dmg
 make icon      # 重新生成 Resources/AppIcon.icns（gitignored）
-make demo      # 重新生成 docs/assets/ 的演示 GIF
+make demo      # 从官网演示录制 docs/assets/ 的 README GIF（需要 Playwright 和 ffmpeg）
 ```
 
 工具链：Xcode 16+（Swift Testing 需要），本机验证 Xcode 26.3 / Swift 6.2。最低系统 macOS 13。

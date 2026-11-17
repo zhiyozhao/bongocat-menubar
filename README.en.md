@@ -14,8 +14,8 @@
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/demo-dark.gif">
-    <img alt="While typing bongo cat, the menu bar cat taps along: left-hand keys tap the left paw, right-hand keys the right paw, both at once tap both paws" src="docs/assets/demo-light.gif" width="720">
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/demo-en-dark.gif">
+    <img alt="The menu bar cat taps along with key presses: left-hand keys tap the left paw, right-hand keys the right paw, both at once tap both paws" src="docs/assets/demo-en-light.gif" width="720">
   </picture>
 </p>
 
@@ -23,13 +23,14 @@
 
 ### Step 1: Install the app (either way)
 
-- **Homebrew**
+**With Homebrew**
 
-  ```bash
-  brew install --cask zhiyozhao/tap/bongocat-menubar
-  ```
+```bash
+brew install --cask zhiyozhao/tap/bongocat-menubar
+```
 
-- **Manually**: download the DMG from [Releases](https://github.com/zhiyozhao/bongocat-menubar/releases/latest) and drag the app into Applications. If the first launch says the developer cannot be verified, go to System Settings → Privacy & Security and click "Open Anyway" at the bottom.
+**Manually**\
+Download the DMG from [Releases](https://github.com/zhiyozhao/bongocat-menubar/releases/latest) and drag the app into Applications. If the first launch says the developer cannot be verified, go to System Settings → Privacy & Security and click "Open Anyway" at the bottom.
 
 ### Step 2: Grant Accessibility permission
 
